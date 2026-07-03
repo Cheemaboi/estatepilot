@@ -1,4 +1,25 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# EstatePilot
+
+EstatePilot is a premium real-estate portfolio app built with Next.js App
+Router, React, Tailwind CSS, Supabase-ready data boundaries, OpenRouter AI,
+Mapbox-ready map previews, and Resend-ready inquiry email.
+
+## Environment
+
+Optional integration variables:
+
+```bash
+OPENROUTER_API_KEY=
+OPENROUTER_MODEL=openrouter/auto
+NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN=
+RESEND_API_KEY=
+INQUIRY_EMAIL_FROM="EstatePilot <onboarding@resend.dev>"
+INQUIRY_EMAIL_TO=
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+```
+
+Without these keys, the app keeps working with local AI fallbacks, demo maps,
+and demo inquiry capture messages.
 
 ## Getting Started
 

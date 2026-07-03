@@ -18,9 +18,9 @@ export function CtaSection() {
             Launch the public experience now. Connect the operating system next.
           </h2>
           <p className="mt-5 text-lg leading-8 text-public-muted">
-            EstatePilot is staged for a clean handoff into listing pages,
-            property detail pages, and the light SaaS dashboard without mixing
-            the two visual languages.
+            EstatePilot is staged with OpenRouter smart matching, Mapbox-ready
+            location previews, inquiry email hooks, and the light SaaS dashboard
+            without mixing the two visual languages.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <ButtonLink href="#featured">Explore homes</ButtonLink>

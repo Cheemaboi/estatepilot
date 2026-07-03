@@ -1,5 +1,9 @@
 import { NextResponse } from "next/server";
-import { createOpenAiJson, getOpenAiModel, hasOpenAiEnv } from "@/lib/openai";
+import {
+  createOpenRouterJson,
+  getOpenRouterModel,
+  hasOpenRouterEnv,
+} from "@/lib/openrouter";
 import { getLocalPropertyAnswer } from "@/lib/property-assistant";
 import { getPropertyBySlug } from "@/lib/supabase/data";
 
@@ -46,10 +50,10 @@ export async function POST(request: Request) {
   const question = body.question?.trim() || "What should I know about this property?";
   const localAnswer = getLocalPropertyAnswer(property, question);
 
-  if (!hasOpenAiEnv()) {
+  if (!hasOpenRouterEnv()) {
     return NextResponse.json({
       answer: localAnswer,
-      fallbackReason: "Using local assistant until the AI service is configured.",
+      fallbackReason: "Using local assistant until OpenRouter is configured.",
       followUps: [
         "What should I ask before touring?",
         "How does this compare with similar homes?",
@@ -59,7 +63,7 @@ export async function POST(request: Request) {
   }
 
   try {
-    const aiResponse = await createOpenAiJson<AiPropertyAssistantResponse>({
+    const aiResponse = await createOpenRouterJson<AiPropertyAssistantResponse>({
       input: {
         property: {
           agent: property.agent,
@@ -85,7 +89,7 @@ export async function POST(request: Request) {
     if (!aiResponse?.answer) {
       return NextResponse.json({
         answer: localAnswer,
-        fallbackReason: "AI returned no answer; using local assistant.",
+        fallbackReason: "OpenRouter returned no answer; using local assistant.",
         followUps: [
           "What should I ask before touring?",
           "How does this compare with similar homes?",
@@ -97,13 +101,13 @@ export async function POST(request: Request) {
     return NextResponse.json({
       answer: aiResponse.answer,
       followUps: aiResponse.followUps,
-      model: getOpenAiModel(),
-      source: "openai",
+      model: getOpenRouterModel(),
+      source: "openrouter",
     });
   } catch {
     return NextResponse.json({
       answer: localAnswer,
-      fallbackReason: "AI service unavailable; using local assistant.",
+      fallbackReason: "OpenRouter unavailable; using local assistant.",
       followUps: [
         "What should I ask before touring?",
         "How does this compare with similar homes?",

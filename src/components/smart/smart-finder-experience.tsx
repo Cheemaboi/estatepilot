@@ -35,7 +35,7 @@ type SmartMatchResponse = {
     score: number;
     slug: string;
   }[];
-  source: "local" | "openai";
+  source: "local" | "openrouter";
   summary: string;
 };
 
@@ -56,7 +56,7 @@ export function SmartFinderExperience({ properties }: SmartFinderExperienceProps
   const [mustHaves, setMustHaves] = useState<string[]>(["Ocean view", "Private"]);
   const [submittedQuery, setSubmittedQuery] = useState(query);
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
-  const [source, setSource] = useState<"local" | "openai">("local");
+  const [source, setSource] = useState<"local" | "openrouter">("local");
   const [summary, setSummary] = useState(
     "EstatePilot is ready to rank homes from your brief.",
   );
@@ -249,7 +249,7 @@ export function SmartFinderExperience({ properties }: SmartFinderExperienceProps
                 </p>
                 <div className="mt-3 flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em]">
                   <span className="rounded-full border border-luxury-accent/35 bg-luxury-accent/12 px-3 py-1 text-luxury-accent">
-                    {source === "openai" ? "AI API" : "Local fallback"}
+                    {source === "openrouter" ? "OpenRouter AI" : "Local fallback"}
                   </span>
                   <span className="text-white/50">
                     {status === "error" ? "Recovered" : "Ranked"}

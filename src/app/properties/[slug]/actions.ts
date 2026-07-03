@@ -2,6 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { sendInquiryEmail } from "@/lib/email";
+import { getPropertyBySlug } from "@/lib/supabase/data";
 import { hasSupabaseEnv } from "@/lib/supabase/env";
 import { createClient } from "@/lib/supabase/server";
 
@@ -19,10 +21,25 @@ export async function createInquiry(formData: FormData) {
     redirect(`/properties/${slug}?message=${encodeURIComponent("Name and email are required.")}`);
   }
 
+  const propertyProfile = await getPropertyBySlug(slug);
+  const emailResult = await sendInquiryEmail({
+    email,
+    fullName,
+    message,
+    phone,
+    preferredDate,
+    preferredTime,
+    propertyTitle: propertyProfile?.title ?? slug,
+    slug,
+    tourFormat,
+  });
+
   if (!hasSupabaseEnv()) {
     redirect(
       `/properties/${slug}?message=${encodeURIComponent(
-        "Inquiry captured in demo mode. Configure Supabase env vars to save it.",
+        emailResult.sent
+          ? "Inquiry email sent. Configure Supabase env vars to also save it."
+          : "Inquiry captured in demo mode. Configure Supabase and email env vars to save and send it.",
       )}`,
     );
   }
@@ -55,5 +72,11 @@ export async function createInquiry(formData: FormData) {
   }
 
   revalidatePath(`/properties/${slug}`);
-  redirect(`/properties/${slug}?message=${encodeURIComponent("Inquiry sent.")}`);
+  redirect(
+    `/properties/${slug}?message=${encodeURIComponent(
+      emailResult.sent
+        ? "Inquiry saved and email sent."
+        : "Inquiry saved. Configure email env vars to send notifications.",
+    )}`,
+  );
 }

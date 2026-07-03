@@ -1,8 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import type { FeaturedProperty } from "@/lib/mock-properties";
+import { getMapboxStaticImageUrl, hasMapboxToken } from "@/lib/mapbox";
 
 type MapPreviewProps = {
   properties: FeaturedProperty[];
@@ -24,7 +26,7 @@ function getMarketLabel(property: FeaturedProperty) {
 export function MapPreview({
   properties,
   title = "Market map preview",
-  description = "Integration-ready map surface for a future provider.",
+  description = "Mapbox-ready location surface with a polished demo fallback.",
 }: MapPreviewProps) {
   const [activeSlug, setActiveSlug] = useState(properties[0]?.slug ?? "");
   const activeProperty = useMemo(
@@ -33,18 +35,40 @@ export function MapPreview({
       properties[0],
     [activeSlug, properties],
   );
+  const mapboxImageUrl = useMemo(
+    () => getMapboxStaticImageUrl(properties),
+    [properties],
+  );
 
   return (
     <div className="relative min-h-[420px] overflow-hidden rounded-[28px] border border-white/12 bg-[radial-gradient(circle_at_28%_22%,rgba(216,189,134,0.18),transparent_26%),linear-gradient(145deg,rgba(22,36,29,0.96),rgba(7,18,13,0.96))] p-5">
-      <div className="absolute inset-0 opacity-25 [background-image:linear-gradient(rgba(255,255,255,0.11)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.11)_1px,transparent_1px)] [background-size:42px_42px]" />
-      <div className="absolute inset-x-5 top-[42%] h-px bg-luxury-accent/15" />
-      <div className="absolute bottom-[26%] left-0 right-0 h-px rotate-[-10deg] bg-white/10" />
+      {mapboxImageUrl ? (
+        <>
+          <Image
+            alt="Mapbox map showing EstatePilot listing locations"
+            className="object-cover opacity-80 saturate-[0.85]"
+            fill
+            sizes="(min-width: 1024px) 400px, 100vw"
+            src={mapboxImageUrl}
+          />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,18,13,0.28),rgba(7,18,13,0.66))]" />
+        </>
+      ) : (
+        <>
+          <div className="absolute inset-0 opacity-25 [background-image:linear-gradient(rgba(255,255,255,0.11)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.11)_1px,transparent_1px)] [background-size:42px_42px]" />
+          <div className="absolute inset-x-5 top-[42%] h-px bg-luxury-accent/15" />
+          <div className="absolute bottom-[26%] left-0 right-0 h-px rotate-[-10deg] bg-white/10" />
+        </>
+      )}
       <div className="relative z-10">
         <p className="text-xs font-semibold uppercase tracking-[0.22em] text-luxury-accent">
           {title}
         </p>
         <p className="mt-3 max-w-sm text-sm leading-6 text-white/70">
           {description}
+        </p>
+        <p className="mt-3 w-fit rounded-full border border-white/12 bg-public-bg/58 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/68 backdrop-blur-md">
+          {hasMapboxToken() && mapboxImageUrl ? "Mapbox live" : "Demo map fallback"}
         </p>
       </div>
 

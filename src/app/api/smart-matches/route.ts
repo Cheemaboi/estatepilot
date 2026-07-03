@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import type { FeaturedProperty } from "@/lib/mock-properties";
-import { createOpenAiJson, getOpenAiModel, hasOpenAiEnv } from "@/lib/openai";
+import {
+  createOpenRouterJson,
+  getOpenRouterModel,
+  hasOpenRouterEnv,
+} from "@/lib/openrouter";
 import { getSmartMatches, type SmartMatch } from "@/lib/smart-matching";
 import { getPublicProperties } from "@/lib/supabase/data";
 
@@ -79,7 +83,7 @@ function getLocalResponse(
     source: "local" as const,
     summary:
       fallbackReason ??
-      "Using EstatePilot's local matcher until the AI service is configured.",
+      "Using EstatePilot's local matcher until OpenRouter is configured.",
   };
 }
 
@@ -107,12 +111,12 @@ export async function POST(request: Request) {
   const properties = await getPublicProperties();
   const localResponse = getLocalResponse(properties, body);
 
-  if (!hasOpenAiEnv()) {
+  if (!hasOpenRouterEnv()) {
     return NextResponse.json(localResponse);
   }
 
   try {
-    const aiResponse = await createOpenAiJson<AiSmartMatchesResponse>({
+    const aiResponse = await createOpenRouterJson<AiSmartMatchesResponse>({
       input: {
         budget: body.budget,
         mustHaves: body.mustHaves ?? [],
@@ -143,7 +147,7 @@ export async function POST(request: Request) {
 
     if (!aiResponse || hydratedMatches.length === 0) {
       return NextResponse.json(
-        getLocalResponse(properties, body, "AI returned no valid matches; using local matcher."),
+        getLocalResponse(properties, body, "OpenRouter returned no valid matches; using local matcher."),
       );
     }
 
@@ -153,13 +157,13 @@ export async function POST(request: Request) {
         score: match.score,
         slug: match.property.slug,
       })),
-      model: getOpenAiModel(),
-      source: "openai",
-      summary: aiResponse.summary,
-    });
+        model: getOpenRouterModel(),
+        source: "openrouter",
+        summary: aiResponse.summary,
+      });
   } catch {
     return NextResponse.json(
-      getLocalResponse(properties, body, "AI service unavailable; using local matcher."),
+      getLocalResponse(properties, body, "OpenRouter unavailable; using local matcher."),
     );
   }
 }

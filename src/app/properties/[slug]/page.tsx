@@ -146,8 +146,8 @@ export default async function PropertyDetailPage({
               Ask what makes this home fit your lifestyle.
             </p>
             <p className="mt-3 text-sm leading-6 text-public-muted">
-              This local assistant gives rule-based guidance now and keeps the
-              interface ready for an AI model later.
+              OpenRouter can power this assistant when configured, with local
+              guidance available as a reliable demo fallback.
             </p>
             <PropertyAssistant property={property} />
           </Card>

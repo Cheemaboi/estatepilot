@@ -15,7 +15,7 @@ type PropertyAssistantResponse = {
   answer: string;
   fallbackReason?: string;
   followUps: string[];
-  source: "local" | "openai";
+  source: "local" | "openrouter";
 };
 
 export function PropertyAssistant({ property }: PropertyAssistantProps) {
@@ -24,7 +24,7 @@ export function PropertyAssistant({ property }: PropertyAssistantProps) {
     getLocalPropertyAnswer(property, suggestedPropertyQuestions[0]),
   );
   const [followUps, setFollowUps] = useState(suggestedPropertyQuestions);
-  const [source, setSource] = useState<"local" | "openai">("local");
+  const [source, setSource] = useState<"local" | "openrouter">("local");
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
   const [statusMessage, setStatusMessage] = useState("Local assistant ready.");
 
@@ -99,7 +99,7 @@ export function PropertyAssistant({ property }: PropertyAssistantProps) {
       <div className="mt-5 rounded-[24px] border border-luxury-accent/25 bg-public-bg/55 p-5 text-sm leading-7 text-public-muted">
         <div className="mb-3 flex flex-wrap items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em]">
           <span className="rounded-full border border-luxury-accent/35 bg-luxury-accent/12 px-3 py-1 text-luxury-accent">
-            {source === "openai" ? "AI API" : "Local fallback"}
+            {source === "openrouter" ? "OpenRouter AI" : "Local fallback"}
           </span>
           <span className="text-white/45">
             {status === "error" ? "Recovered" : statusMessage}
