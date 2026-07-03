@@ -31,7 +31,7 @@ export function CuratedMarkets() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-public-bg/85 via-public-bg/15 to-transparent" />
               <div className="absolute inset-x-0 bottom-0 p-5">
-                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-luxury-accent">
+                <p className="inline-flex rounded-full border border-luxury-accent/35 bg-public-bg/55 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-[#f3dca3] shadow-[0_10px_30px_rgba(0,0,0,0.24)] backdrop-blur-md">
                   {market.count}
                 </p>
                 <h3 className="mt-2 text-2xl font-semibold text-white">

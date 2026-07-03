@@ -53,15 +53,15 @@ export default async function PropertyDetailPage({
             </p>
             <dl className="mt-6 grid grid-cols-3 gap-3 text-sm">
               <div>
-                <dt className="text-white/42">Beds</dt>
+                <dt className="text-white/56">Beds</dt>
                 <dd className="mt-1 font-semibold text-white">{property.beds}</dd>
               </div>
               <div>
-                <dt className="text-white/42">Baths</dt>
+                <dt className="text-white/56">Baths</dt>
                 <dd className="mt-1 font-semibold text-white">{property.baths}</dd>
               </div>
               <div>
-                <dt className="text-white/42">Area</dt>
+                <dt className="text-white/56">Area</dt>
                 <dd className="mt-1 font-semibold text-white">{property.area}</dd>
               </div>
             </dl>
