@@ -1,13 +1,13 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { FavoriteButton } from "@/components/features/favorite-button";
 import { PropertyCard } from "@/components/public/property-card";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { SelectMenu } from "@/components/ui/select-menu";
 import type { FeaturedProperty } from "@/lib/mock-properties";
-import { getSmartMatches } from "@/lib/smart-matching";
+import { getSmartMatches, type SmartMatch } from "@/lib/smart-matching";
 
 const examples = [
   "Ocean view, private, six bedrooms, outdoor entertaining, calm design",
@@ -28,6 +28,17 @@ type SmartFinderExperienceProps = {
   properties: FeaturedProperty[];
 };
 
+type SmartMatchResponse = {
+  fallbackReason?: string;
+  matches: {
+    reasons: string[];
+    score: number;
+    slug: string;
+  }[];
+  source: "local" | "openai";
+  summary: string;
+};
+
 function getConfidenceLabel(score: number) {
   if (score >= 90) return "Excellent fit";
   if (score >= 78) return "Strong fit";
@@ -44,30 +55,90 @@ export function SmartFinderExperience({ properties }: SmartFinderExperienceProps
   const [timeline, setTimeline] = useState("90");
   const [mustHaves, setMustHaves] = useState<string[]>(["Ocean view", "Private"]);
   const [submittedQuery, setSubmittedQuery] = useState(query);
-
-  const enrichedQuery = `${submittedQuery} ${mustHaves.join(" ")}`;
-  const matches = useMemo(
-    () =>
-      getSmartMatches({
-        properties,
-        query: enrichedQuery,
-        budget,
-        timeline,
-      }),
-    [budget, enrichedQuery, properties, timeline],
+  const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
+  const [source, setSource] = useState<"local" | "openai">("local");
+  const [summary, setSummary] = useState(
+    "EstatePilot is ready to rank homes from your brief.",
+  );
+  const [matches, setMatches] = useState<SmartMatch[]>(() =>
+    getLocalMatches(properties, query, budget, timeline, mustHaves),
   );
   const topMatch = matches[0];
 
-  function toggleMustHave(signal: string) {
-    setMustHaves((current) =>
-      current.includes(signal)
-        ? current.filter((item) => item !== signal)
-        : [...current, signal],
+  function syncLocalMatches({
+    nextBudget = budget,
+    nextMustHaves = mustHaves,
+    nextQuery = submittedQuery,
+    nextTimeline = timeline,
+  }: {
+    nextBudget?: string;
+    nextMustHaves?: string[];
+    nextQuery?: string;
+    nextTimeline?: string;
+  }) {
+    setMatches(
+      getLocalMatches(properties, nextQuery, nextBudget, nextTimeline, nextMustHaves),
     );
+    setSource("local");
+    setSummary("Previewing with local matching. Run Match for the AI-ranked readout.");
   }
 
-  function runMatch() {
-    setSubmittedQuery(query);
+  function toggleMustHave(signal: string) {
+    const nextMustHaves = mustHaves.includes(signal)
+      ? mustHaves.filter((item) => item !== signal)
+      : [...mustHaves, signal];
+
+    setMustHaves(nextMustHaves);
+    syncLocalMatches({ nextMustHaves });
+  }
+
+  function handleBudgetChange(nextBudget: string) {
+    setBudget(nextBudget);
+    syncLocalMatches({ nextBudget });
+  }
+
+  function handleTimelineChange(nextTimeline: string) {
+    setTimeline(nextTimeline);
+    syncLocalMatches({ nextTimeline });
+  }
+
+  async function runMatch(nextQuery = query) {
+    setSubmittedQuery(nextQuery);
+    setStatus("loading");
+
+    try {
+      const response = await fetch("/api/smart-matches", {
+        body: JSON.stringify({
+          budget,
+          mustHaves,
+          query: nextQuery,
+          timeline,
+        }),
+        headers: { "Content-Type": "application/json" },
+        method: "POST",
+      });
+
+      if (!response.ok) {
+        throw new Error("Smart match request failed");
+      }
+
+      const data = (await response.json()) as SmartMatchResponse;
+      const nextMatches = hydrateMatches(properties, data.matches);
+
+      if (!nextMatches.length) {
+        throw new Error("No usable matches returned");
+      }
+
+      setMatches(nextMatches);
+      setSource(data.source);
+      setSummary(data.fallbackReason ?? data.summary);
+      setStatus("idle");
+    } catch {
+      setMatches(getLocalMatches(properties, nextQuery, budget, timeline, mustHaves));
+      setSource("local");
+      setSummary("Something interrupted the AI request, so EstatePilot used local matching.");
+      setStatus("error");
+    }
   }
 
   return (
@@ -83,8 +154,15 @@ export function SmartFinderExperience({ properties }: SmartFinderExperienceProps
                 Turn a plain-language brief into ranked homes.
               </h2>
             </div>
-            <Button className="shrink-0 px-6" onClick={runMatch} type="button">
-              Match
+            <Button
+              className="shrink-0 px-6"
+              disabled={status === "loading"}
+              onClick={() => {
+                void runMatch();
+              }}
+              type="button"
+            >
+              {status === "loading" ? "Matching..." : "Match"}
             </Button>
           </div>
 
@@ -100,7 +178,7 @@ export function SmartFinderExperience({ properties }: SmartFinderExperienceProps
           <div className="mt-5 grid gap-4 sm:grid-cols-2">
             <SelectMenu
               label="Timeline"
-              onChange={setTimeline}
+              onChange={handleTimelineChange}
               options={[
                 { label: "30d", value: "30" },
                 { label: "90d", value: "90" },
@@ -110,7 +188,7 @@ export function SmartFinderExperience({ properties }: SmartFinderExperienceProps
             />
             <SelectMenu
               label="Budget"
-              onChange={setBudget}
+              onChange={handleBudgetChange}
               options={[
                 { label: "$3M", value: "3" },
                 { label: "$6M", value: "6" },
@@ -152,7 +230,7 @@ export function SmartFinderExperience({ properties }: SmartFinderExperienceProps
                 key={example}
                 onClick={() => {
                   setQuery(example);
-                  setSubmittedQuery(example);
+                  void runMatch(example);
                 }}
                 type="button"
               >
@@ -169,6 +247,14 @@ export function SmartFinderExperience({ properties }: SmartFinderExperienceProps
                 <p className="text-xs font-semibold uppercase tracking-[0.22em] text-luxury-accent">
                   Live readout
                 </p>
+                <div className="mt-3 flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em]">
+                  <span className="rounded-full border border-luxury-accent/35 bg-luxury-accent/12 px-3 py-1 text-luxury-accent">
+                    {source === "openai" ? "AI API" : "Local fallback"}
+                  </span>
+                  <span className="text-white/50">
+                    {status === "error" ? "Recovered" : "Ranked"}
+                  </span>
+                </div>
                 <div className="mt-4 rounded-[24px] border border-white/12 bg-public-bg/62 p-5 backdrop-blur-xl">
                   <div className="flex items-start justify-between gap-5">
                     <div>
@@ -193,6 +279,9 @@ export function SmartFinderExperience({ properties }: SmartFinderExperienceProps
                     />
                   </div>
                   <div className="mt-5 grid gap-2">
+                    <p className="rounded-2xl border border-luxury-accent/20 bg-luxury-accent/10 px-4 py-3 text-sm leading-6 text-white/78">
+                      {summary}
+                    </p>
                     {topMatch.reasons.map((reason) => (
                       <p
                         className="rounded-2xl border border-white/10 bg-white/[0.05] px-4 py-3 text-sm leading-6 text-white/74"
@@ -222,7 +311,7 @@ export function SmartFinderExperience({ properties }: SmartFinderExperienceProps
           Recommended matches
         </p>
         <h2 className="mt-3 max-w-2xl text-4xl font-semibold text-white">
-          Ranked locally from your brief, must-haves, budget, and timeline.
+          Ranked from your brief, must-haves, budget, and timeline.
         </h2>
         <div className="mt-8 grid gap-6 md:grid-cols-3">
           {matches.map((match) => (
@@ -238,4 +327,40 @@ export function SmartFinderExperience({ properties }: SmartFinderExperienceProps
       </div>
     </div>
   );
+}
+
+function getLocalMatches(
+  properties: FeaturedProperty[],
+  query: string,
+  budget: string,
+  timeline: string,
+  mustHaves: string[],
+) {
+  return getSmartMatches({
+    budget,
+    properties,
+    query: [query, ...mustHaves].filter(Boolean).join(" "),
+    timeline,
+  });
+}
+
+function hydrateMatches(
+  properties: FeaturedProperty[],
+  matches: SmartMatchResponse["matches"],
+): SmartMatch[] {
+  return matches
+    .map((match) => {
+      const property = properties.find((item) => item.slug === match.slug);
+
+      if (!property) {
+        return null;
+      }
+
+      return {
+        property,
+        reasons: match.reasons,
+        score: match.score,
+      };
+    })
+    .filter((match): match is SmartMatch => Boolean(match));
 }
