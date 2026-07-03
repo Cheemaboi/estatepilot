@@ -2,10 +2,10 @@ import Link from "next/link";
 import { ButtonLink } from "@/components/ui/button";
 
 const navItems = [
-  { label: "Listings", href: "#featured" },
-  { label: "Markets", href: "#search" },
-  { label: "Agents", href: "#contact" },
-  { label: "Insights", href: "#featured" },
+  { label: "Listings", href: "/listings" },
+  { label: "Markets", href: "/#markets" },
+  { label: "Agents", href: "/#agents" },
+  { label: "Smart Finder", href: "/smart-finder" },
 ];
 
 export function PublicNavbar() {

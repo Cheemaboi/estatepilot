@@ -1,8 +1,8 @@
 const footerLinks = [
-  { label: "Listings", href: "#featured" },
-  { label: "Agents", href: "#contact" },
-  { label: "Markets", href: "#search" },
-  { label: "Contact", href: "#contact" },
+  { label: "Listings", href: "/listings" },
+  { label: "Agents", href: "/#agents" },
+  { label: "Markets", href: "/#markets" },
+  { label: "Smart Finder", href: "/smart-finder" },
 ];
 
 export function Footer() {
