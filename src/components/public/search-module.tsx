@@ -5,7 +5,7 @@ import { FormEvent, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { InputField } from "@/components/ui/field";
-import { SegmentedControl } from "@/components/ui/segmented-control";
+import { SelectMenu } from "@/components/ui/select-menu";
 
 const typeOptions = [
   { label: "Any", value: "all" },
@@ -79,31 +79,27 @@ export function SearchModule() {
               Search
             </Button>
           </div>
-          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-[1.1fr_1.1fr_0.7fr_1.2fr]">
-            <SegmentedControl
+          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-[1fr_1fr_0.72fr_1fr]">
+            <SelectMenu
               label="Property type"
-              name="property_type"
               onChange={setType}
               options={typeOptions}
               value={type}
             />
-            <SegmentedControl
+            <SelectMenu
               label="Budget"
-              name="budget"
               onChange={setBudget}
               options={budgetOptions}
               value={budget}
             />
-            <SegmentedControl
+            <SelectMenu
               label="Beds"
-              name="beds"
               onChange={setBeds}
               options={bedOptions}
               value={beds}
             />
-            <SegmentedControl
+            <SelectMenu
               label="Lifestyle"
-              name="lifestyle"
               onChange={setLifestyle}
               options={lifestyleOptions}
               value={lifestyle}

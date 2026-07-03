@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { InputField } from "@/components/ui/field";
-import { SegmentedControl } from "@/components/ui/segmented-control";
+import { SelectMenu } from "@/components/ui/select-menu";
 import type { FeaturedProperty } from "@/lib/mock-properties";
 
 export type ListingFilters = {
@@ -194,26 +194,26 @@ export function ListingsExplorer({
                 Clear
               </Button>
             </div>
-            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-[1.05fr_1.05fr_0.7fr_1.15fr]">
-              <SegmentedControl
+            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-[1fr_1fr_0.72fr_1fr]">
+              <SelectMenu
                 label="Type"
                 onChange={(value) => updateFilter("type", value)}
                 options={typeOptions}
                 value={filters.type}
               />
-              <SegmentedControl
+              <SelectMenu
                 label="Budget"
                 onChange={(value) => updateFilter("budget", value)}
                 options={budgetOptions}
                 value={filters.budget}
               />
-              <SegmentedControl
+              <SelectMenu
                 label="Beds"
                 onChange={(value) => updateFilter("beds", value)}
                 options={bedOptions}
                 value={filters.beds}
               />
-              <SegmentedControl
+              <SelectMenu
                 label="Lifestyle"
                 onChange={(value) => updateFilter("lifestyle", value)}
                 options={lifestyleOptions}
@@ -229,8 +229,8 @@ export function ListingsExplorer({
                   Filters update instantly using local mock listing data.
                 </p>
               </div>
-              <div className="min-w-[240px]">
-                <SegmentedControl
+              <div className="w-full sm:w-56">
+                <SelectMenu
                   label="Sort"
                   onChange={(value) => updateFilter("sort", value)}
                   options={sortOptions}

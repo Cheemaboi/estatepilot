@@ -5,7 +5,7 @@ import { FavoriteButton } from "@/components/features/favorite-button";
 import { PropertyCard } from "@/components/public/property-card";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { SegmentedControl } from "@/components/ui/segmented-control";
+import { SelectMenu } from "@/components/ui/select-menu";
 import type { FeaturedProperty } from "@/lib/mock-properties";
 import { getSmartMatches } from "@/lib/smart-matching";
 
@@ -98,9 +98,8 @@ export function SmartFinderExperience({ properties }: SmartFinderExperienceProps
           </label>
 
           <div className="mt-5 grid gap-4 sm:grid-cols-2">
-            <SegmentedControl
+            <SelectMenu
               label="Timeline"
-              name="timeline"
               onChange={setTimeline}
               options={[
                 { label: "30d", value: "30" },
@@ -109,9 +108,8 @@ export function SmartFinderExperience({ properties }: SmartFinderExperienceProps
               ]}
               value={timeline}
             />
-            <SegmentedControl
+            <SelectMenu
               label="Budget"
-              name="budget"
               onChange={setBudget}
               options={[
                 { label: "$3M", value: "3" },
