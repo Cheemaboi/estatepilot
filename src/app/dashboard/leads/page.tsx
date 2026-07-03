@@ -1,9 +1,11 @@
 import { DashboardCard } from "@/components/dashboard/dashboard-card";
 import { DashboardShell } from "@/components/dashboard/dashboard-shell";
 import { StatusPill } from "@/components/dashboard/status-pill";
-import { leads } from "@/lib/mock-dashboard";
+import { getDashboardLeads } from "@/lib/supabase/data";
 
-export default function DashboardLeadsPage() {
+export default async function DashboardLeadsPage() {
+  const leads = await getDashboardLeads();
+
   return (
     <DashboardShell
       title="Leads and CRM"

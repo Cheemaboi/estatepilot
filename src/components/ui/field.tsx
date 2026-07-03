@@ -6,23 +6,39 @@ const fieldStyles =
 const selectStyles =
   "[color-scheme:dark] [&>option]:bg-public-bg [&>option]:text-white [&>option]:checked:bg-public-panel";
 
+const dashboardFieldStyles =
+  "h-12 w-full rounded-full border border-black/10 bg-white px-4 text-sm text-dashboard-text transition placeholder:text-dashboard-muted/65 focus:border-green-accent focus:outline-none";
+
+const labelStyles = {
+  public: "grid gap-2 text-sm font-medium text-white/78",
+  dashboard: "grid gap-2 text-sm font-medium text-dashboard-muted",
+};
+
 type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
   label: string;
+  variant?: "public" | "dashboard";
 };
 
 type SelectFieldProps = SelectHTMLAttributes<HTMLSelectElement> & {
   label: string;
+  variant?: "public" | "dashboard";
 };
 
 export function InputField({
   className = "",
   label,
+  variant = "public",
   ...props
 }: InputFieldProps) {
   return (
-    <label className="grid gap-2 text-sm font-medium text-white/78">
+    <label className={labelStyles[variant]}>
       <span>{label}</span>
-      <input className={`${fieldStyles} ${className}`} {...props} />
+      <input
+        className={`${
+          variant === "dashboard" ? dashboardFieldStyles : fieldStyles
+        } ${className}`}
+        {...props}
+      />
     </label>
   );
 }
@@ -31,12 +47,20 @@ export function SelectField({
   className = "",
   label,
   children,
+  variant = "public",
   ...props
 }: SelectFieldProps) {
   return (
-    <label className="grid gap-2 text-sm font-medium text-white/78">
+    <label className={labelStyles[variant]}>
       <span>{label}</span>
-      <select className={`${fieldStyles} ${selectStyles} ${className}`} {...props}>
+      <select
+        className={`${
+          variant === "dashboard"
+            ? dashboardFieldStyles
+            : `${fieldStyles} ${selectStyles}`
+        } ${className}`}
+        {...props}
+      >
         {children}
       </select>
     </label>

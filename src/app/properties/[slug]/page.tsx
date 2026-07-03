@@ -8,10 +8,15 @@ import { PublicShell } from "@/components/public/public-shell";
 import { PropertyCard } from "@/components/public/property-card";
 import { Section } from "@/components/ui/section";
 import { featuredProperties } from "@/lib/mock-properties";
+import { getPropertyBySlug, getPublicProperties } from "@/lib/supabase/data";
+import { createInquiry } from "@/app/properties/[slug]/actions";
 
 type PropertyDetailPageProps = {
   params: Promise<{
     slug: string;
+  }>;
+  searchParams: Promise<{
+    message?: string;
   }>;
 };
 
@@ -23,15 +28,19 @@ export function generateStaticParams() {
 
 export default async function PropertyDetailPage({
   params,
+  searchParams,
 }: PropertyDetailPageProps) {
   const { slug } = await params;
-  const property = featuredProperties.find((item) => item.slug === slug);
+  const { message } = await searchParams;
+  const property = await getPropertyBySlug(slug);
 
   if (!property) {
     notFound();
   }
 
-  const relatedProperties = featuredProperties.filter((item) => item.slug !== slug);
+  const relatedProperties = (await getPublicProperties()).filter(
+    (item) => item.slug !== slug,
+  );
 
   return (
     <PublicShell>
@@ -146,14 +155,35 @@ export default async function PropertyDetailPage({
             {property.agent.name}, {property.agent.role}
           </p>
           <p className="mt-1 text-sm text-luxury-accent">{property.agent.phone}</p>
-          <div className="mt-6 grid gap-4">
-            <InputField label="Name" placeholder="Your name" />
-            <InputField label="Email" placeholder="you@example.com" type="email" />
-            <InputField label="Preferred date" type="date" />
-            <Button type="button" className="mt-2">
+          {message ? (
+            <p className="mt-4 rounded-2xl border border-luxury-accent/25 bg-public-bg/50 p-3 text-sm text-public-muted">
+              {message}
+            </p>
+          ) : null}
+          <form action={createInquiry} className="mt-6 grid gap-4">
+            <input name="slug" type="hidden" value={property.slug} />
+            <InputField label="Name" name="full_name" placeholder="Your name" required />
+            <InputField
+              label="Email"
+              name="email"
+              placeholder="you@example.com"
+              type="email"
+              required
+            />
+            <InputField label="Phone" name="phone" placeholder="+1 (555) 010-0000" />
+            <InputField label="Preferred date" name="preferred_date" type="date" />
+            <label className="grid gap-2 text-sm font-medium text-white/78">
+              <span>Message</span>
+              <textarea
+                className="min-h-28 w-full rounded-[24px] border border-white/12 bg-white/10 px-4 py-3 text-sm text-white transition placeholder:text-white/45 focus:border-luxury-accent focus:bg-white/14 focus:outline-none"
+                name="message"
+                placeholder="Tell us what you would like to see."
+              />
+            </label>
+            <Button type="submit" className="mt-2">
               Send inquiry
             </Button>
-          </div>
+          </form>
         </Card>
       </Section>
       <Section className="pt-0">

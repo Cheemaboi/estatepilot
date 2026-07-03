@@ -1,8 +1,10 @@
 import { DashboardShell } from "@/components/dashboard/dashboard-shell";
 import { DataTable } from "@/components/dashboard/data-table";
-import { transactions } from "@/lib/mock-dashboard";
+import { getDashboardTransactions } from "@/lib/supabase/data";
 
-export default function DashboardTransactionsPage() {
+export default async function DashboardTransactionsPage() {
+  const transactions = await getDashboardTransactions();
+
   return (
     <DashboardShell
       title="Transactions"

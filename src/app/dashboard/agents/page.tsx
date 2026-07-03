@@ -1,9 +1,11 @@
 import { DashboardCard } from "@/components/dashboard/dashboard-card";
 import { DashboardShell } from "@/components/dashboard/dashboard-shell";
 import { StatusPill } from "@/components/dashboard/status-pill";
-import { agents } from "@/lib/mock-dashboard";
+import { getDashboardAgents } from "@/lib/supabase/data";
 
-export default function DashboardAgentsPage() {
+export default async function DashboardAgentsPage() {
+  const agents = await getDashboardAgents();
+
   return (
     <DashboardShell
       title="Agents management"

@@ -5,11 +5,13 @@ import { InputField, SelectField } from "@/components/ui/field";
 import { PublicShell } from "@/components/public/public-shell";
 import { PropertyCard } from "@/components/public/property-card";
 import { Section } from "@/components/ui/section";
-import { featuredProperties } from "@/lib/mock-properties";
+import { getPublicProperties } from "@/lib/supabase/data";
 
 const filters = ["Verified", "New this week", "Private tours", "Water views"];
 
-export default function ListingsPage() {
+export default async function ListingsPage() {
+  const properties = await getPublicProperties();
+
   return (
     <PublicShell>
       <Section className="pb-12 pt-32 lg:pt-40">
@@ -59,7 +61,7 @@ export default function ListingsPage() {
             </div>
           </Card>
           <div className="mt-6 grid gap-6 xl:grid-cols-2">
-            {featuredProperties.map((property) => (
+            {properties.map((property) => (
               <PropertyCard key={property.slug} property={property} />
             ))}
           </div>
@@ -78,7 +80,7 @@ export default function ListingsPage() {
               </h2>
             </div>
             <div className="grid gap-3">
-              {featuredProperties.map((property) => (
+              {properties.map((property) => (
                 <div
                   className="rounded-2xl border border-white/12 bg-public-bg/50 p-4"
                   key={property.slug}

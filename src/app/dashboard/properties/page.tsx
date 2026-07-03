@@ -1,9 +1,11 @@
 import { DashboardCard } from "@/components/dashboard/dashboard-card";
 import { DashboardShell } from "@/components/dashboard/dashboard-shell";
 import { StatusPill } from "@/components/dashboard/status-pill";
-import { dashboardProperties } from "@/lib/mock-dashboard";
+import { getDashboardProperties } from "@/lib/supabase/data";
 
-export default function DashboardPropertiesPage() {
+export default async function DashboardPropertiesPage() {
+  const properties = await getDashboardProperties();
+
   return (
     <DashboardShell
       title="Properties management"
@@ -41,7 +43,7 @@ export default function DashboardPropertiesPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-black/5">
-                {dashboardProperties.map((property) => (
+                {properties.map((property) => (
                   <tr className="transition hover:bg-dashboard-bg/70" key={property.name}>
                     <td className="px-5 py-4 font-semibold text-dashboard-text">
                       {property.name}
@@ -69,7 +71,7 @@ export default function DashboardPropertiesPage() {
             Placeholder for map provider integration in a later phase.
           </p>
           <div className="mt-5 grid min-h-[520px] content-between rounded-2xl bg-[radial-gradient(circle_at_30%_20%,rgba(63,125,88,0.28),transparent_26%),linear-gradient(145deg,#edf4ed,#ffffff)] p-5">
-            {dashboardProperties.map((property) => (
+            {properties.map((property) => (
               <div
                 className="rounded-2xl bg-white p-4 shadow-sm"
                 key={property.name}

@@ -5,7 +5,7 @@ import { InputField, SelectField } from "@/components/ui/field";
 import { PublicShell } from "@/components/public/public-shell";
 import { PropertyCard } from "@/components/public/property-card";
 import { Section } from "@/components/ui/section";
-import { featuredProperties } from "@/lib/mock-properties";
+import { getPublicProperties } from "@/lib/supabase/data";
 
 const prompts = [
   "A quiet ocean-view home with space for extended family",
@@ -13,7 +13,9 @@ const prompts = [
   "A warm villa with a pool, office, and low-maintenance grounds",
 ];
 
-export default function SmartFinderPage() {
+export default async function SmartFinderPage() {
+  const properties = await getPublicProperties();
+
   return (
     <PublicShell>
       <Section className="pb-12 pt-32 lg:pt-40">
@@ -78,7 +80,7 @@ export default function SmartFinderPage() {
             </div>
           </div>
           <div className="mt-8 grid gap-6 md:grid-cols-3">
-            {featuredProperties.map((property) => (
+            {properties.map((property) => (
               <PropertyCard key={property.slug} property={property} />
             ))}
           </div>

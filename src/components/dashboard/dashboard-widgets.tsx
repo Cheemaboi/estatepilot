@@ -2,10 +2,18 @@ import { DashboardCard } from "@/components/dashboard/dashboard-card";
 import { StatusPill } from "@/components/dashboard/status-pill";
 import {
   activity,
-  appointments,
   dashboardProperties,
   leads,
 } from "@/lib/mock-dashboard";
+
+type ListingItem = typeof dashboardProperties[number];
+type LeadItem = typeof leads[number];
+type AppointmentItem = {
+  time: string;
+  title: string;
+  property: string;
+  contact: string;
+};
 
 export function RevenueChartPlaceholder() {
   const bars = ["42%", "58%", "51%", "74%", "66%", "82%", "70%"];
@@ -42,14 +50,18 @@ export function RevenueChartPlaceholder() {
   );
 }
 
-export function RecentListingsWidget() {
+export function RecentListingsWidget({
+  items = dashboardProperties.slice(0, 3),
+}: {
+  items?: ListingItem[];
+}) {
   return (
     <DashboardCard className="p-5">
       <h2 className="text-lg font-semibold text-dashboard-text">
         Recent listings
       </h2>
       <div className="mt-4 grid gap-3">
-        {dashboardProperties.slice(0, 3).map((property) => (
+        {items.map((property) => (
           <div
             className="flex items-center justify-between gap-4 rounded-2xl bg-dashboard-bg p-4"
             key={property.name}
@@ -68,12 +80,16 @@ export function RecentListingsWidget() {
   );
 }
 
-export function LeadSnippetsWidget() {
+export function LeadSnippetsWidget({
+  items = leads.slice(0, 3),
+}: {
+  items?: LeadItem[];
+}) {
   return (
     <DashboardCard className="p-5">
       <h2 className="text-lg font-semibold text-dashboard-text">Lead snippets</h2>
       <div className="mt-4 grid gap-3">
-        {leads.slice(0, 3).map((lead) => (
+        {items.map((lead) => (
           <div className="rounded-2xl border border-black/5 p-4" key={lead.name}>
             <div className="flex items-center justify-between gap-3">
               <p className="font-semibold text-dashboard-text">{lead.name}</p>
@@ -126,12 +142,12 @@ export function ActivityFeed() {
   );
 }
 
-export function AppointmentTimeline() {
+export function AppointmentTimeline({ items }: { items: AppointmentItem[] }) {
   return (
     <DashboardCard className="p-5">
       <h2 className="text-lg font-semibold text-dashboard-text">Today</h2>
       <div className="mt-4 grid gap-3">
-        {appointments.map((appointment) => (
+        {items.map((appointment) => (
           <div className="grid grid-cols-[64px_minmax(0,1fr)] gap-3" key={appointment.time}>
             <p className="text-sm font-semibold text-green-accent">
               {appointment.time}
