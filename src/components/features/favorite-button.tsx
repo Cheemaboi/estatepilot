@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 
 const storageKey = "estatepilot:saved-properties";
 
@@ -16,27 +16,28 @@ function readSaved() {
   }
 }
 
+function subscribe(callback: () => void) {
+  window.addEventListener("estatepilot:favorites-updated", callback);
+  window.addEventListener("storage", callback);
+
+  return () => {
+    window.removeEventListener("estatepilot:favorites-updated", callback);
+    window.removeEventListener("storage", callback);
+  };
+}
+
+function getSavedSnapshot() {
+  return readSaved().join("|");
+}
+
 type FavoriteButtonProps = {
   slug: string;
   label?: string;
 };
 
 export function FavoriteButton({ slug, label = "Save" }: FavoriteButtonProps) {
-  const [saved, setSaved] = useState(() => readSaved().includes(slug));
-
-  useEffect(() => {
-    function syncSaved() {
-      setSaved(readSaved().includes(slug));
-    }
-
-    window.addEventListener("estatepilot:favorites-updated", syncSaved);
-    window.addEventListener("storage", syncSaved);
-
-    return () => {
-      window.removeEventListener("estatepilot:favorites-updated", syncSaved);
-      window.removeEventListener("storage", syncSaved);
-    };
-  }, [slug]);
+  const savedSnapshot = useSyncExternalStore(subscribe, getSavedSnapshot, () => "");
+  const saved = savedSnapshot.split("|").filter(Boolean).includes(slug);
 
   function toggleSaved() {
     const current = readSaved();
@@ -45,7 +46,6 @@ export function FavoriteButton({ slug, label = "Save" }: FavoriteButtonProps) {
       : [...current, slug];
 
     window.localStorage.setItem(storageKey, JSON.stringify(next));
-    setSaved(next.includes(slug));
     window.dispatchEvent(new Event("estatepilot:favorites-updated"));
   }
 

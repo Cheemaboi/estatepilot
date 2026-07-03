@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card";
 import { FavoriteButton } from "@/components/features/favorite-button";
 import { MapPreview } from "@/components/features/map-preview";
 import { InputField } from "@/components/ui/field";
+import { SegmentedControl } from "@/components/ui/segmented-control";
 import { PublicShell } from "@/components/public/public-shell";
 import { PropertyCard } from "@/components/public/property-card";
 import { PropertyAssistant } from "@/components/smart/property-assistant";
@@ -125,9 +126,10 @@ export default async function PropertyDetailPage({
           <div className="mt-8 grid gap-3 sm:grid-cols-2">
             {property.amenities.map((amenity) => (
               <div
-                className="rounded-2xl border border-white/12 bg-white/[0.06] p-4 text-white"
+                className="rounded-2xl border border-luxury-accent/25 bg-public-bg/55 p-4 text-white shadow-[0_14px_34px_rgba(0,0,0,0.22)] backdrop-blur-md"
                 key={amenity}
               >
+                <span className="mr-2 text-luxury-accent">•</span>
                 {amenity}
               </div>
             ))}
@@ -170,17 +172,15 @@ export default async function PropertyDetailPage({
             <InputField label="Phone" name="phone" placeholder="+1 (555) 010-0000" />
             <InputField label="Preferred date" name="preferred_date" type="date" />
             <InputField label="Preferred time" name="preferred_time" type="time" />
-            <label className="grid gap-2 text-sm font-medium text-white/78">
-              <span>Tour format</span>
-              <select
-                className="h-12 w-full rounded-full border border-white/12 bg-white/10 px-4 text-sm text-white [color-scheme:dark] focus:border-luxury-accent focus:outline-none [&>option]:bg-public-bg [&>option]:text-white"
-                name="tour_format"
-              >
-                <option value="private">Private showing</option>
-                <option value="video">Video walkthrough</option>
-                <option value="advisor">Advisor consultation</option>
-              </select>
-            </label>
+            <SegmentedControl
+              label="Tour format"
+              name="tour_format"
+              options={[
+                { label: "Private", value: "private" },
+                { label: "Video", value: "video" },
+                { label: "Advisor", value: "advisor" },
+              ]}
+            />
             <label className="grid gap-2 text-sm font-medium text-white/78">
               <span>Message</span>
               <textarea

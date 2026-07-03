@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useSyncExternalStore } from "react";
 import { PropertyCard } from "@/components/public/property-card";
 import type { FeaturedProperty } from "@/lib/mock-properties";
 
@@ -14,27 +14,30 @@ function readSaved() {
   }
 }
 
+function subscribe(callback: () => void) {
+  window.addEventListener("estatepilot:favorites-updated", callback);
+  window.addEventListener("storage", callback);
+
+  return () => {
+    window.removeEventListener("estatepilot:favorites-updated", callback);
+    window.removeEventListener("storage", callback);
+  };
+}
+
+function getSavedSnapshot() {
+  return readSaved().join("|");
+}
+
 type SavedPropertiesPanelProps = {
   properties: FeaturedProperty[];
 };
 
 export function SavedPropertiesPanel({ properties }: SavedPropertiesPanelProps) {
-  const [savedSlugs, setSavedSlugs] = useState<string[]>([]);
-
-  useEffect(() => {
-    function syncSaved() {
-      setSavedSlugs(readSaved());
-    }
-
-    syncSaved();
-    window.addEventListener("estatepilot:favorites-updated", syncSaved);
-    window.addEventListener("storage", syncSaved);
-
-    return () => {
-      window.removeEventListener("estatepilot:favorites-updated", syncSaved);
-      window.removeEventListener("storage", syncSaved);
-    };
-  }, []);
+  const savedSnapshot = useSyncExternalStore(subscribe, getSavedSnapshot, () => "");
+  const savedSlugs = useMemo(
+    () => savedSnapshot.split("|").filter(Boolean),
+    [savedSnapshot],
+  );
 
   const savedProperties = useMemo(
     () => properties.filter((property) => savedSlugs.includes(property.slug)),

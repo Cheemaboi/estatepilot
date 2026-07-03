@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { InputField, SelectField } from "@/components/ui/field";
+import { InputField } from "@/components/ui/field";
+import { SegmentedControl } from "@/components/ui/segmented-control";
 
 export function SearchModule() {
   return (
@@ -10,24 +11,23 @@ export function SearchModule() {
         className="mx-auto max-w-6xl p-5 sm:p-6 lg:p-7"
         aria-label="Property search"
       >
-        <div className="grid gap-4 lg:grid-cols-[1.15fr_0.85fr_0.85fr_auto] lg:items-end">
+        <div className="grid gap-4 lg:grid-cols-[1fr_1fr_auto] lg:items-end">
           <InputField
             label="Location or keyword"
             name="location"
             placeholder="Waterfront, penthouse, private estate"
             type="search"
           />
-          <SelectField label="Property type" name="type" defaultValue="villa">
-            <option value="villa">Villa</option>
-            <option value="penthouse">Penthouse</option>
-            <option value="estate">Estate</option>
-            <option value="townhome">Townhome</option>
-          </SelectField>
-          <SelectField label="Budget" name="budget" defaultValue="2m-6m">
-            <option value="1m-2m">$1M - $2M</option>
-            <option value="2m-6m">$2M - $6M</option>
-            <option value="6m-plus">$6M+</option>
-          </SelectField>
+          <SegmentedControl
+            label="Search profile"
+            name="search_profile"
+            options={[
+              { label: "Villa", value: "villa" },
+              { label: "Estate", value: "estate" },
+              { label: "Penthouse", value: "penthouse" },
+              { label: "$6M+", value: "6m-plus" },
+            ]}
+          />
           <Button className="h-12 px-8" type="button">
             Search
           </Button>

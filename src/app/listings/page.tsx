@@ -1,7 +1,8 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { InputField, SelectField } from "@/components/ui/field";
+import { InputField } from "@/components/ui/field";
+import { SegmentedControl } from "@/components/ui/segmented-control";
 import { PublicShell } from "@/components/public/public-shell";
 import { PropertyCard } from "@/components/public/property-card";
 import { MapPreview } from "@/components/features/map-preview";
@@ -30,34 +31,35 @@ export default async function ListingsPage() {
       <section className="mx-auto grid w-full max-w-7xl gap-6 px-5 pb-24 sm:px-8 lg:grid-cols-[minmax(0,1fr)_380px] lg:px-10">
         <div>
           <Card variant="glass" className="p-5">
-            <div className="grid gap-4 md:grid-cols-[1fr_0.7fr_0.7fr_auto] md:items-end">
+            <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(280px,0.8fr)_auto] xl:items-end">
               <InputField
                 label="Search"
                 placeholder="City, neighborhood, lifestyle"
                 type="search"
               />
-              <SelectField label="Type" defaultValue="all">
-                <option value="all">All homes</option>
-                <option value="estate">Estate</option>
-                <option value="penthouse">Penthouse</option>
-              </SelectField>
-              <SelectField label="Sort" defaultValue="featured">
-                <option value="featured">Featured</option>
-                <option value="price-high">Price high</option>
-                <option value="newest">Newest</option>
-              </SelectField>
+              <SegmentedControl
+                label="Listing type"
+                name="listing_type"
+                options={[
+                  { label: "All", value: "all" },
+                  { label: "Estate", value: "estate" },
+                  { label: "Villa", value: "villa" },
+                  { label: "Penthouse", value: "penthouse" },
+                ]}
+              />
               <Button type="button" className="h-12 px-8">
                 Refine
               </Button>
             </div>
             <div className="mt-5 flex flex-wrap gap-2">
-              {filters.map((filter) => (
-                <span
-                  className="rounded-full border border-white/12 bg-white/[0.06] px-4 py-2 text-sm text-white/72"
+              {[...filters, "Price high", "Newest", "Best match"].map((filter) => (
+                <button
+                  className="rounded-full border border-white/12 bg-white/[0.06] px-4 py-2 text-sm font-semibold text-white/72 transition hover:border-luxury-accent/50 hover:text-white"
                   key={filter}
+                  type="button"
                 >
                   {filter}
-                </span>
+                </button>
               ))}
             </div>
           </Card>

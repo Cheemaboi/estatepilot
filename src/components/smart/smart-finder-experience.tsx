@@ -5,7 +5,8 @@ import { FavoriteButton } from "@/components/features/favorite-button";
 import { PropertyCard } from "@/components/public/property-card";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { InputField, SelectField } from "@/components/ui/field";
+import { InputField } from "@/components/ui/field";
+import { SegmentedControl } from "@/components/ui/segmented-control";
 import type { FeaturedProperty } from "@/lib/mock-properties";
 import { getSmartMatches } from "@/lib/smart-matching";
 
@@ -52,15 +53,17 @@ export function SmartFinderExperience({ properties }: SmartFinderExperienceProps
               value={query}
             />
           </label>
-          <SelectField
+          <SegmentedControl
             label="Timeline"
-            onChange={(event) => setTimeline(event.target.value)}
+            name="timeline"
+            onChange={setTimeline}
+            options={[
+              { label: "30d", value: "30" },
+              { label: "90d", value: "90" },
+              { label: "Flexible", value: "flexible" },
+            ]}
             value={timeline}
-          >
-            <option value="30">30 days</option>
-            <option value="90">90 days</option>
-            <option value="flexible">Flexible</option>
-          </SelectField>
+          />
           <InputField
             label="Budget"
             onChange={(event) => setBudget(event.target.value)}
