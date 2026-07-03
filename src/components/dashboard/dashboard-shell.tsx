@@ -23,6 +23,12 @@ export function DashboardShell({
 }: DashboardShellProps) {
   return (
     <div className="min-h-screen bg-dashboard-bg text-dashboard-text">
+      <a
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-green-accent focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white"
+        href="#dashboard-content"
+      >
+        Skip to dashboard content
+      </a>
       <div className="mx-auto grid min-h-screen max-w-[1500px] grid-cols-[minmax(0,1fr)] lg:grid-cols-[260px_minmax(0,1fr)]">
         <aside className="min-w-0 border-b border-black/5 bg-white px-5 py-5 lg:border-b-0 lg:border-r lg:py-6">
           <div className="flex items-center justify-between gap-4 lg:block">
@@ -81,7 +87,13 @@ export function DashboardShell({
               </Link>
             </div>
           </header>
-          <main className="px-5 py-6 sm:px-8 lg:py-8">{children}</main>
+          <main
+            className="px-5 py-6 sm:px-8 lg:py-8"
+            id="dashboard-content"
+            tabIndex={-1}
+          >
+            {children}
+          </main>
         </div>
       </div>
     </div>

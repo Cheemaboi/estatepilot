@@ -57,7 +57,11 @@ export default async function PropertyDetailPage({
             </h1>
             <p className="mt-5 text-xl text-public-muted">{property.location}</p>
             <div className="mt-6">
-              <FavoriteButton slug={property.slug} label="Save property" />
+              <FavoriteButton
+                slug={property.slug}
+                label="Save property"
+                propertyTitle={property.title}
+              />
             </div>
           </div>
           <Card variant="glass" className="p-6">

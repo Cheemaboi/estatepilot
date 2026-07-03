@@ -33,11 +33,23 @@ function getSavedSnapshot() {
 type FavoriteButtonProps = {
   slug: string;
   label?: string;
+  propertyTitle?: string;
 };
 
-export function FavoriteButton({ slug, label = "Save" }: FavoriteButtonProps) {
+export function FavoriteButton({
+  slug,
+  label = "Save",
+  propertyTitle,
+}: FavoriteButtonProps) {
   const savedSnapshot = useSyncExternalStore(subscribe, getSavedSnapshot, () => "");
   const saved = savedSnapshot.split("|").filter(Boolean).includes(slug);
+  const accessibleName = propertyTitle
+    ? saved
+      ? `Remove ${propertyTitle} from saved homes`
+      : `${label} ${propertyTitle}`
+    : saved
+      ? "Remove from saved homes"
+      : `${label} property`;
 
   function toggleSaved() {
     const current = readSaved();
@@ -51,6 +63,7 @@ export function FavoriteButton({ slug, label = "Save" }: FavoriteButtonProps) {
 
   return (
     <button
+      aria-label={accessibleName}
       aria-pressed={saved}
       className={`rounded-full border px-4 py-2 text-xs font-semibold transition ${
         saved

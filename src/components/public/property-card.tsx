@@ -31,7 +31,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
           </div>
         </Link>
         <div className="absolute right-4 top-4">
-          <FavoriteButton slug={property.slug} />
+          <FavoriteButton slug={property.slug} propertyTitle={property.title} />
         </div>
       </div>
       <div className="p-4">

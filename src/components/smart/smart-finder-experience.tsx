@@ -203,7 +203,11 @@ export function SmartFinderExperience({ properties }: SmartFinderExperienceProps
                     ))}
                   </div>
                   <div className="mt-5">
-                    <FavoriteButton slug={topMatch.property.slug} label="Save match" />
+                    <FavoriteButton
+                      slug={topMatch.property.slug}
+                      label="Save match"
+                      propertyTitle={topMatch.property.title}
+                    />
                   </div>
                 </div>
               </div>
