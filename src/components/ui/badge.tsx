@@ -4,7 +4,7 @@ type BadgeVariant = "luxury" | "green" | "muted";
 
 const badgeStyles: Record<BadgeVariant, string> = {
   luxury:
-    "border-luxury-accent/45 bg-public-bg/55 text-[#f3dca3] shadow-[0_10px_30px_rgba(0,0,0,0.28)]",
+    "border-luxury-accent/50 bg-public-bg/68 text-[#f8e7ba] shadow-[0_12px_34px_rgba(0,0,0,0.34)]",
   green: "border-green-accent/35 bg-public-bg/55 text-[#c8efd7]",
   muted: "border-white/18 bg-public-bg/50 text-white/82",
 };

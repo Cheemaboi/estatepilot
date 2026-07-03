@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 type SegmentedOption = {
   label: string;
   value: string;
@@ -22,8 +24,17 @@ export function SegmentedControl({
   onChange,
   variant = "public",
 }: SegmentedControlProps) {
-  const activeValue = value ?? options[0]?.value;
+  const [internalValue, setInternalValue] = useState(options[0]?.value ?? "");
+  const activeValue = value ?? internalValue;
   const isPublic = variant === "public";
+
+  function handleChange(nextValue: string) {
+    if (value === undefined) {
+      setInternalValue(nextValue);
+    }
+
+    onChange?.(nextValue);
+  }
 
   return (
     <fieldset className="grid gap-2">
@@ -63,7 +74,7 @@ export function SegmentedControl({
                 checked={isActive}
                 className="sr-only"
                 name={name ?? label}
-                onChange={() => onChange?.(option.value)}
+                onChange={() => handleChange(option.value)}
                 type="radio"
                 value={option.value}
               />

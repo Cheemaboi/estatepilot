@@ -17,18 +17,18 @@ export function PropertyCard({ property }: PropertyCardProps) {
           href={`/properties/${property.slug}`}
           className="block focus-visible:rounded-[22px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-luxury-accent"
         >
-        <div className="relative aspect-[4/3] overflow-hidden rounded-[22px]">
-          <Image
-            src={property.image}
-            alt={`${property.title} in ${property.location}`}
-            fill
-            sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
-            className="object-cover transition duration-500 group-hover:scale-105"
-          />
-          <div className="absolute left-4 top-4">
-            <Badge variant="luxury">{property.tag}</Badge>
+          <div className="relative aspect-[4/3] overflow-hidden rounded-[22px]">
+            <Image
+              src={property.image}
+              alt={`${property.title} in ${property.location}`}
+              fill
+              sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+              className="object-cover transition duration-500 group-hover:scale-105"
+            />
+            <div className="absolute left-4 top-4 rounded-full bg-public-bg/35 p-1 shadow-[0_14px_30px_rgba(0,0,0,0.26)] backdrop-blur-xl">
+              <Badge variant="luxury">{property.tag}</Badge>
+            </div>
           </div>
-        </div>
         </Link>
         <div className="absolute right-4 top-4">
           <FavoriteButton slug={property.slug} />
@@ -53,21 +53,21 @@ export function PropertyCard({ property }: PropertyCardProps) {
             </p>
           </div>
         </Link>
-          <dl className="mt-6 grid grid-cols-3 gap-3 border-t border-white/10 pt-5 text-sm text-white/72">
-            <div>
-              <dt className="text-white/56">Beds</dt>
-              <dd className="mt-1 font-semibold text-white">{property.beds}</dd>
-            </div>
-            <div>
-              <dt className="text-white/56">Baths</dt>
-              <dd className="mt-1 font-semibold text-white">{property.baths}</dd>
-            </div>
-            <div>
-              <dt className="text-white/56">Area</dt>
-              <dd className="mt-1 font-semibold text-white">{property.area}</dd>
-            </div>
-          </dl>
-        </div>
+        <dl className="mt-6 grid grid-cols-3 gap-3 border-t border-white/10 pt-5 text-sm text-white/72">
+          <div>
+            <dt className="text-white/56">Beds</dt>
+            <dd className="mt-1 font-semibold text-white">{property.beds}</dd>
+          </div>
+          <div>
+            <dt className="text-white/56">Baths</dt>
+            <dd className="mt-1 font-semibold text-white">{property.baths}</dd>
+          </div>
+          <div>
+            <dt className="text-white/56">Area</dt>
+            <dd className="mt-1 font-semibold text-white">{property.area}</dd>
+          </div>
+        </dl>
+      </div>
     </Card>
   );
 }
