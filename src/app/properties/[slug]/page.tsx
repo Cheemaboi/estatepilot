@@ -1,11 +1,14 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
-import { Button, ButtonLink } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { FavoriteButton } from "@/components/features/favorite-button";
+import { MapPreview } from "@/components/features/map-preview";
 import { InputField } from "@/components/ui/field";
 import { PublicShell } from "@/components/public/public-shell";
 import { PropertyCard } from "@/components/public/property-card";
+import { PropertyAssistant } from "@/components/smart/property-assistant";
 import { Section } from "@/components/ui/section";
 import { featuredProperties } from "@/lib/mock-properties";
 import { getPropertyBySlug, getPublicProperties } from "@/lib/supabase/data";
@@ -52,6 +55,9 @@ export default async function PropertyDetailPage({
               {property.title}
             </h1>
             <p className="mt-5 text-xl text-public-muted">{property.location}</p>
+            <div className="mt-6">
+              <FavoriteButton slug={property.slug} label="Save property" />
+            </div>
           </div>
           <Card variant="glass" className="p-6">
             <p className="text-sm uppercase tracking-[0.2em] text-luxury-accent">
@@ -103,18 +109,11 @@ export default async function PropertyDetailPage({
               />
             </div>
           ))}
-          <Card variant="glass" className="p-6">
-            <p className="text-sm uppercase tracking-[0.2em] text-luxury-accent">
-              Location preview
-            </p>
-            <p className="mt-3 text-2xl font-semibold text-white">
-              Market context without live maps yet
-            </p>
-            <p className="mt-3 text-sm leading-6 text-public-muted">
-              Map integration arrives later; this shell preserves the placement
-              and content hierarchy for the detail page.
-            </p>
-          </Card>
+          <MapPreview
+            properties={[property]}
+            title="Location intelligence"
+            description="Map-ready placement for neighborhood, commute, and private-tour context."
+          />
         </div>
       </section>
       <Section className="grid gap-8 pt-0 lg:grid-cols-[minmax(0,1fr)_380px]">
@@ -141,12 +140,10 @@ export default async function PropertyDetailPage({
               Ask what makes this home fit your lifestyle.
             </p>
             <p className="mt-3 text-sm leading-6 text-public-muted">
-              Presentational only for this phase, ready for a later AI
-              recommendation flow.
+              This local assistant gives rule-based guidance now and keeps the
+              interface ready for an AI model later.
             </p>
-            <ButtonLink href="/smart-finder" className="mt-5">
-              Open Smart Finder
-            </ButtonLink>
+            <PropertyAssistant property={property} />
           </Card>
         </div>
         <Card variant="glass" className="h-fit p-6">
@@ -172,6 +169,18 @@ export default async function PropertyDetailPage({
             />
             <InputField label="Phone" name="phone" placeholder="+1 (555) 010-0000" />
             <InputField label="Preferred date" name="preferred_date" type="date" />
+            <InputField label="Preferred time" name="preferred_time" type="time" />
+            <label className="grid gap-2 text-sm font-medium text-white/78">
+              <span>Tour format</span>
+              <select
+                className="h-12 w-full rounded-full border border-white/12 bg-white/10 px-4 text-sm text-white [color-scheme:dark] focus:border-luxury-accent focus:outline-none [&>option]:bg-public-bg [&>option]:text-white"
+                name="tour_format"
+              >
+                <option value="private">Private showing</option>
+                <option value="video">Video walkthrough</option>
+                <option value="advisor">Advisor consultation</option>
+              </select>
+            </label>
             <label className="grid gap-2 text-sm font-medium text-white/78">
               <span>Message</span>
               <textarea

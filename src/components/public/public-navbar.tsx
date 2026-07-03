@@ -6,6 +6,7 @@ const navItems = [
   { label: "Markets", href: "/#markets" },
   { label: "Agents", href: "/#agents" },
   { label: "Smart Finder", href: "/smart-finder" },
+  { label: "Favorites", href: "/favorites" },
 ];
 
 export function PublicNavbar() {

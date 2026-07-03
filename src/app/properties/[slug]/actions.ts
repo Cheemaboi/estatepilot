@@ -11,6 +11,8 @@ export async function createInquiry(formData: FormData) {
   const email = String(formData.get("email") ?? "");
   const phone = String(formData.get("phone") ?? "");
   const preferredDate = String(formData.get("preferred_date") ?? "");
+  const preferredTime = String(formData.get("preferred_time") ?? "");
+  const tourFormat = String(formData.get("tour_format") ?? "");
   const message = String(formData.get("message") ?? "");
 
   if (!slug || !fullName || !email) {
@@ -38,7 +40,14 @@ export async function createInquiry(formData: FormData) {
     email,
     phone: phone || null,
     preferred_date: preferredDate || null,
-    message: message || null,
+    message:
+      [
+        message,
+        preferredTime ? `Preferred time: ${preferredTime}` : "",
+        tourFormat ? `Tour format: ${tourFormat}` : "",
+      ]
+        .filter(Boolean)
+        .join("\n") || null,
   });
 
   if (error) {

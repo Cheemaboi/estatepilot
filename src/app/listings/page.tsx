@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import { InputField, SelectField } from "@/components/ui/field";
 import { PublicShell } from "@/components/public/public-shell";
 import { PropertyCard } from "@/components/public/property-card";
+import { MapPreview } from "@/components/features/map-preview";
 import { Section } from "@/components/ui/section";
 import { getPublicProperties } from "@/lib/supabase/data";
 
@@ -68,31 +69,13 @@ export default async function ListingsPage() {
         </div>
         <Card
           variant="glass"
-          className="sticky top-6 hidden h-[720px] overflow-hidden p-6 lg:block"
+          className="sticky top-6 hidden h-fit overflow-hidden p-4 lg:block"
         >
-          <div className="flex h-full flex-col justify-between rounded-[24px] border border-white/12 bg-[radial-gradient(circle_at_30%_20%,rgba(216,189,134,0.25),transparent_24%),linear-gradient(145deg,rgba(255,255,255,0.12),rgba(255,255,255,0.03))] p-6">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-luxury-accent">
-                Map preview
-              </p>
-              <h2 className="mt-3 text-3xl font-semibold text-white">
-                West Coast, Austin, and Manhattan signals.
-              </h2>
-            </div>
-            <div className="grid gap-3">
-              {properties.map((property) => (
-                <div
-                  className="rounded-2xl border border-white/12 bg-public-bg/50 p-4"
-                  key={property.slug}
-                >
-                  <p className="font-semibold text-white">{property.location}</p>
-                  <p className="mt-1 text-sm text-public-muted">
-                    {property.price} · {property.type}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
+          <MapPreview
+            properties={properties}
+            title="Map integration surface"
+            description="A provider-ready map area for location search, pins, and neighborhood filtering."
+          />
         </Card>
       </section>
     </PublicShell>

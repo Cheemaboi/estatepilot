@@ -3,6 +3,7 @@ const footerLinks = [
   { label: "Agents", href: "/#agents" },
   { label: "Markets", href: "/#markets" },
   { label: "Smart Finder", href: "/smart-finder" },
+  { label: "Favorites", href: "/favorites" },
 ];
 
 export function Footer() {

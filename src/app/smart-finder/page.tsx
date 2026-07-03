@@ -1,9 +1,7 @@
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { InputField, SelectField } from "@/components/ui/field";
 import { PublicShell } from "@/components/public/public-shell";
-import { PropertyCard } from "@/components/public/property-card";
+import { SmartFinderExperience } from "@/components/smart/smart-finder-experience";
 import { Section } from "@/components/ui/section";
 import { getPublicProperties } from "@/lib/supabase/data";
 
@@ -26,8 +24,8 @@ export default async function SmartFinderPage() {
               Describe the life. EstatePilot frames the search.
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-public-muted">
-              This is the presentational Smart Finder shell. It shows the future
-              natural-language search surface without calling any AI API yet.
+              Describe what you want in plain language and EstatePilot will rank
+              homes with a local matching engine that is ready for a later AI API.
             </p>
           </div>
           <Card variant="glass" className="p-6">
@@ -48,43 +46,7 @@ export default async function SmartFinderPage() {
         </div>
       </Section>
       <section className="mx-auto w-full max-w-7xl px-5 pb-24 sm:px-8 lg:px-10">
-        <Card variant="glass" className="p-5 sm:p-7">
-          <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_220px_220px_auto] lg:items-end">
-            <label className="grid gap-2 text-sm font-medium text-white/78">
-              <span>Describe what you want</span>
-              <textarea
-                className="min-h-32 w-full rounded-[26px] border border-white/12 bg-white/10 px-5 py-4 text-sm leading-6 text-white transition placeholder:text-white/45 focus:border-luxury-accent focus:bg-white/14 focus:outline-none"
-                placeholder="I want a private home near the water with entertaining space, four bedrooms, and a calm design language."
-              />
-            </label>
-            <SelectField label="Timeline" defaultValue="90">
-              <option value="30">30 days</option>
-              <option value="90">90 days</option>
-              <option value="flexible">Flexible</option>
-            </SelectField>
-            <InputField label="Budget" placeholder="$2M - $6M" />
-            <Button type="button" className="h-12 px-8">
-              Match
-            </Button>
-          </div>
-        </Card>
-        <div className="mt-12">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-luxury-accent">
-                Recommended matches
-              </p>
-              <h2 className="mt-3 text-4xl font-semibold text-white">
-                Static recommendations for the first AI surface.
-              </h2>
-            </div>
-          </div>
-          <div className="mt-8 grid gap-6 md:grid-cols-3">
-            {properties.map((property) => (
-              <PropertyCard key={property.slug} property={property} />
-            ))}
-          </div>
-        </div>
+        <SmartFinderExperience properties={properties} />
       </section>
     </PublicShell>
   );
