@@ -11,6 +11,9 @@ const statusStyles: Record<string, string> = {
   Contract: "bg-green-accent/12 text-deep-green",
   Diligence: "bg-[#d8bd86]/18 text-[#755b19]",
   Offer: "bg-dashboard-bg text-dashboard-muted",
+  Pending: "bg-dashboard-bg text-dashboard-muted",
+  "Needs changes": "bg-[#d8bd86]/18 text-[#755b19]",
+  Ready: "bg-green-accent/12 text-deep-green",
 };
 
 type StatusPillProps = {

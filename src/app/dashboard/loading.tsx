@@ -5,7 +5,7 @@ export default function DashboardLoading() {
         <aside className="border-b border-black/5 bg-white px-5 py-5 lg:border-b-0 lg:border-r lg:py-6">
           <div className="h-5 w-40 animate-pulse rounded-full bg-dashboard-bg" />
           <div className="mt-8 grid gap-3">
-            {["Overview", "Properties", "Agents", "Leads"].map((item) => (
+            {["Overview", "Properties", "Agents", "Leads", "Activity", "Settings"].map((item) => (
               <div
                 className="h-10 animate-pulse rounded-xl bg-dashboard-bg"
                 key={item}

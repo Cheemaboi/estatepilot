@@ -8,6 +8,8 @@ const navItems = [
   { label: "Leads", href: "/dashboard/leads" },
   { label: "Transactions", href: "/dashboard/transactions" },
   { label: "Appointments", href: "/dashboard/appointments" },
+  { label: "Activity", href: "/dashboard/activity" },
+  { label: "Settings", href: "/dashboard/settings" },
 ];
 
 type DashboardShellProps = {
@@ -58,10 +60,11 @@ export function DashboardShell({
           </nav>
           <div className="mt-8 hidden rounded-2xl bg-dashboard-bg p-4 lg:block">
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-green-accent">
-              Static mode
+              Operational snapshot
             </p>
             <p className="mt-2 text-sm leading-6 text-dashboard-muted">
-              Frontend dashboard shell using mock operational data only.
+              Supabase-backed data is used when available, with mock data keeping
+              local development stable.
             </p>
           </div>
         </aside>

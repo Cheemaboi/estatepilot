@@ -1,5 +1,5 @@
 import { DashboardShell } from "@/components/dashboard/dashboard-shell";
-import { DataTable } from "@/components/dashboard/data-table";
+import { TransactionsBrowser } from "@/components/dashboard/transactions-browser";
 import { getDashboardTransactions } from "@/lib/supabase/data";
 
 export default async function DashboardTransactionsPage() {
@@ -10,17 +10,7 @@ export default async function DashboardTransactionsPage() {
       title="Transactions"
       description="Transaction values, stages, target close dates, and deal references in a clean table shell."
     >
-      <DataTable
-        title="Active transactions"
-        headers={["Client", "Property", "Amount", "Status", "Target close"]}
-        rows={transactions.map((transaction) => [
-          transaction.client,
-          transaction.property,
-          transaction.amount,
-          transaction.status,
-          transaction.close,
-        ])}
-      />
+      <TransactionsBrowser transactions={transactions} />
     </DashboardShell>
   );
 }

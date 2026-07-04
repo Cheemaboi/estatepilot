@@ -51,6 +51,25 @@ export type Database = {
         Update: Partial<Database["public"]["Tables"]["appointments"]["Row"]>;
         Relationships: [];
       };
+      admin_activity_logs: {
+        Row: {
+          id: string;
+          actor_id: string | null;
+          entity_type: string;
+          entity_slug: string | null;
+          action: string;
+          summary: string;
+          metadata: Json;
+          created_at: string;
+        };
+        Insert: Partial<Database["public"]["Tables"]["admin_activity_logs"]["Row"]> & {
+          entity_type: string;
+          action: string;
+          summary: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["admin_activity_logs"]["Row"]>;
+        Relationships: [];
+      };
       inquiries: {
         Row: {
           id: string;
@@ -150,6 +169,24 @@ export type Database = {
         Update: Partial<Database["public"]["Tables"]["properties"]["Row"]>;
         Relationships: [];
       };
+      workspace_settings: {
+        Row: {
+          id: number;
+          agency_name: string;
+          support_email: string;
+          timezone: string;
+          default_visibility: "draft" | "review" | "live" | "archived";
+          notification_mode: "email" | "in-app" | "both";
+          auto_approve_media: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: Partial<Database["public"]["Tables"]["workspace_settings"]["Row"]> & {
+          id?: number;
+        };
+        Update: Partial<Database["public"]["Tables"]["workspace_settings"]["Row"]>;
+        Relationships: [];
+      };
       property_images: {
         Row: {
           id: string;
@@ -157,6 +194,7 @@ export type Database = {
           url: string;
           alt: string;
           sort_order: number;
+          storage_path: string | null;
           created_at: string;
         };
         Insert: Partial<Database["public"]["Tables"]["property_images"]["Row"]> & {

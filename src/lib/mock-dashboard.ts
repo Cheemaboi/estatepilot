@@ -7,52 +7,70 @@ export const dashboardKpis = [
 
 export const dashboardProperties = [
   {
+    slug: "glass-ridge-estate",
     name: "Glass Ridge Estate",
     market: "Malibu",
     agent: "Maya Sterling",
     price: "$8.9M",
     status: "Live",
     inquiries: 28,
+    image:
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=900&q=80",
   },
   {
+    slug: "crescent-garden-villa",
     name: "Crescent Garden Villa",
     market: "Austin",
     agent: "Noah Vale",
     price: "$3.4M",
     status: "Review",
     inquiries: 16,
+    image:
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80",
   },
   {
+    slug: "hudson-penthouse",
     name: "Hudson Penthouse",
     market: "New York",
     agent: "Elena Park",
     price: "$6.2M",
     status: "Live",
     inquiries: 34,
+    image:
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=900&q=80",
   },
   {
+    slug: "harbor-court-residence",
     name: "Harbor Court Residence",
     market: "Miami",
     agent: "Iris Chen",
     price: "$4.8M",
     status: "Draft",
     inquiries: 9,
+    image:
+      "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=900&q=80",
   },
   {
+    slug: "desert-canyon-compound",
     name: "Desert Canyon Compound",
     market: "Scottsdale",
     agent: "Renee Calder",
     price: "$5.7M",
     status: "Live",
     inquiries: 21,
+    image:
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80",
   },
   {
+    slug: "northstar-lake-house",
     name: "Northstar Lake House",
     market: "Lake Tahoe",
     agent: "Sofia Hale",
     price: "$7.4M",
     status: "Review",
     inquiries: 12,
+    image:
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=900&q=80",
   },
 ];
 

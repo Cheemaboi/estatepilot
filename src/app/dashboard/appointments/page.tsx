@@ -1,5 +1,5 @@
 import { DashboardShell } from "@/components/dashboard/dashboard-shell";
-import { AppointmentTimeline } from "@/components/dashboard/dashboard-widgets";
+import { AppointmentsBrowser } from "@/components/dashboard/appointments-browser";
 import { getDashboardAppointments } from "@/lib/supabase/data";
 
 export default async function DashboardAppointmentsPage() {
@@ -10,9 +10,7 @@ export default async function DashboardAppointmentsPage() {
       title="Appointments"
       description="Scheduled meetings, showings, listing reviews, and next actions for the agency calendar."
     >
-      <div className="max-w-3xl">
-        <AppointmentTimeline items={appointments} />
-      </div>
+      <AppointmentsBrowser appointments={appointments} />
     </DashboardShell>
   );
 }
