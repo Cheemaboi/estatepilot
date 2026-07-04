@@ -41,6 +41,7 @@ const defaultWorkspaceSettings: WorkspaceSettings = {
 
 type PropertyRow = Database["public"]["Tables"]["properties"]["Row"];
 type AgentRow = Database["public"]["Tables"]["agents"]["Row"];
+type AppointmentRow = Database["public"]["Tables"]["appointments"]["Row"];
 type ImageRow = Database["public"]["Tables"]["property_images"]["Row"];
 type ActivityRow = Database["public"]["Tables"]["admin_activity_logs"]["Row"];
 
@@ -290,23 +291,41 @@ export async function getDashboardAppointments() {
   }
 
   const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("appointments")
-    .select("*")
-    .order("scheduled_at");
+  const { data, error } = await supabase.from("appointments").select("*").order("scheduled_at");
 
   if (error || !data?.length) {
     return mockAppointments;
   }
 
-  return data.map((appointment) => ({
+  const appointmentRows = data as AppointmentRow[];
+  const propertyIds = appointmentRows.map((appointment) => appointment.property_id).filter((id): id is string => Boolean(id));
+  const agentIds = appointmentRows.map((appointment) => appointment.agent_id).filter((id): id is string => Boolean(id));
+
+  const [propertiesResult, agentsResult] = await Promise.all([
+    propertyIds.length
+      ? supabase.from("properties").select("id, title").in("id", propertyIds)
+      : Promise.resolve({ data: [] as Array<{ id: string; title: string }> }),
+    agentIds.length
+      ? supabase.from("agents").select("id, display_name").in("id", agentIds)
+      : Promise.resolve({ data: [] as Array<{ id: string; display_name: string }> }),
+  ]);
+
+  const properties = propertiesResult.data ?? [];
+  const agents = agentsResult.data ?? [];
+
+  return appointmentRows.map((appointment) => ({
+    contact:
+      appointment.contact_name ??
+      agents.find((agent) => agent.id === appointment.agent_id)?.display_name ??
+      "Agency team",
+    property:
+      properties.find((property) => property.id === appointment.property_id)?.title ??
+      "Connected property",
     time: new Date(appointment.scheduled_at).toLocaleTimeString("en-US", {
       hour: "2-digit",
       minute: "2-digit",
     }),
     title: appointment.title,
-    property: "Connected property",
-    contact: "Connected contact",
   }));
 }
 

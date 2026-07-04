@@ -18,6 +18,7 @@ const actionFilters = [
   "listing published live",
   "listing archived",
   "draft restored",
+  "appointment scheduled",
   "media uploaded",
   "media deleted",
 ];
@@ -161,6 +162,7 @@ export function ActivityBrowser({ items }: ActivityBrowserProps) {
             { label: "Settings", value: filteredItems.filter((item) => item.action === "settings saved").length },
             { label: "Status changes", value: filteredItems.filter((item) => item.action === "status updated").length },
             { label: "Workflow updates", value: filteredItems.filter((item) => ["review requested", "listing published live", "listing archived", "draft restored"].includes(item.action)).length },
+            { label: "Appointments", value: filteredItems.filter((item) => item.action === "appointment scheduled").length },
             { label: "Uploads", value: filteredItems.filter((item) => item.action === "media uploaded").length },
             { label: "Deletes", value: filteredItems.filter((item) => item.action === "media deleted").length },
           ].map((item) => (
