@@ -12,7 +12,11 @@ import { PropertyCard } from "@/components/public/property-card";
 import { PropertyAssistant } from "@/components/smart/property-assistant";
 import { Section } from "@/components/ui/section";
 import { featuredProperties } from "@/lib/mock-properties";
-import { getPropertyBySlug, getPublicProperties } from "@/lib/supabase/data";
+import {
+  getPropertyBySlug,
+  getPublicProperties,
+  getSavedPropertySlugs,
+} from "@/lib/supabase/data";
 import { createInquiry } from "@/app/properties/[slug]/actions";
 
 type PropertyDetailPageProps = {
@@ -36,15 +40,17 @@ export default async function PropertyDetailPage({
 }: PropertyDetailPageProps) {
   const { slug } = await params;
   const { message } = await searchParams;
-  const property = await getPropertyBySlug(slug);
+  const [property, relatedProperties, savedSlugs] = await Promise.all([
+    getPropertyBySlug(slug),
+    getPublicProperties(),
+    getSavedPropertySlugs(),
+  ]);
 
   if (!property) {
     notFound();
   }
 
-  const relatedProperties = (await getPublicProperties()).filter(
-    (item) => item.slug !== slug,
-  );
+  const related = relatedProperties.filter((item) => item.slug !== slug);
 
   return (
     <PublicShell>
@@ -58,6 +64,7 @@ export default async function PropertyDetailPage({
             <p className="mt-5 text-xl text-public-muted">{property.location}</p>
             <div className="mt-6">
               <FavoriteButton
+                initialSaved={savedSlugs.includes(property.slug)}
                 slug={property.slug}
                 label="Save property"
                 propertyTitle={property.title}
@@ -202,8 +209,12 @@ export default async function PropertyDetailPage({
       <Section className="pt-0">
         <h2 className="text-4xl font-semibold text-white">Related properties</h2>
         <div className="mt-8 grid gap-6 md:grid-cols-2">
-          {relatedProperties.map((related) => (
-            <PropertyCard key={related.slug} property={related} />
+          {related.map((relatedProperty) => (
+            <PropertyCard
+              initialSaved={savedSlugs.includes(relatedProperty.slug)}
+              key={relatedProperty.slug}
+              property={relatedProperty}
+            />
           ))}
         </div>
       </Section>

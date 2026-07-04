@@ -8,22 +8,16 @@ export type DashboardAccess = {
   userId: string | null;
 };
 
-export async function getCurrentDashboardAccess(): Promise<DashboardAccess> {
+export async function getCurrentSessionUser() {
   if (!hasSupabaseEnv()) {
-    return {
-      role: "admin",
-      userId: null,
-    };
+    return null;
   }
 
   const supabase = await createClient();
   const { data, error } = await supabase.auth.getUser();
 
   if (error || !data.user) {
-    return {
-      role: "visitor",
-      userId: null,
-    };
+    return null;
   }
 
   const { data: profile } = await supabase
@@ -38,3 +32,18 @@ export async function getCurrentDashboardAccess(): Promise<DashboardAccess> {
   };
 }
 
+export async function getCurrentDashboardAccess(): Promise<DashboardAccess> {
+  const session = await getCurrentSessionUser();
+
+  if (!session) {
+    return {
+      role: hasSupabaseEnv() ? "visitor" : "admin",
+      userId: null,
+    };
+  }
+
+  return {
+    role: session.role,
+    userId: session.userId,
+  };
+}

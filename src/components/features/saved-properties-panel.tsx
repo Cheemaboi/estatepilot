@@ -29,14 +29,19 @@ function getSavedSnapshot() {
 }
 
 type SavedPropertiesPanelProps = {
+  initialSavedSlugs?: string[];
   properties: FeaturedProperty[];
 };
 
-export function SavedPropertiesPanel({ properties }: SavedPropertiesPanelProps) {
+export function SavedPropertiesPanel({
+  initialSavedSlugs = [],
+  properties,
+}: SavedPropertiesPanelProps) {
   const savedSnapshot = useSyncExternalStore(subscribe, getSavedSnapshot, () => "");
+  const localSavedSlugs = useMemo(() => savedSnapshot.split("|").filter(Boolean), [savedSnapshot]);
   const savedSlugs = useMemo(
-    () => savedSnapshot.split("|").filter(Boolean),
-    [savedSnapshot],
+    () => Array.from(new Set([...initialSavedSlugs, ...localSavedSlugs])),
+    [initialSavedSlugs, localSavedSlugs],
   );
 
   const savedProperties = useMemo(

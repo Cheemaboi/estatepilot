@@ -2,7 +2,7 @@ import { ListingsExplorer, type ListingFilters } from "@/components/public/listi
 import { PublicShell } from "@/components/public/public-shell";
 import { Badge } from "@/components/ui/badge";
 import { Section } from "@/components/ui/section";
-import { getPublicProperties } from "@/lib/supabase/data";
+import { getPublicProperties, getSavedPropertySlugs } from "@/lib/supabase/data";
 
 type ListingsPageProps = {
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
@@ -22,6 +22,7 @@ export default async function ListingsPage({ searchParams }: ListingsPageProps) 
     getPublicProperties(),
     searchParams ?? Promise.resolve({}),
   ]);
+  const savedSlugs = await getSavedPropertySlugs();
   const initialFilters: ListingFilters = {
     q: getStringParam(params, "q"),
     type: getStringParam(params, "type") || "all",
@@ -46,7 +47,11 @@ export default async function ListingsPage({ searchParams }: ListingsPageProps) 
           </p>
         </div>
       </Section>
-      <ListingsExplorer initialFilters={initialFilters} properties={properties} />
+      <ListingsExplorer
+        initialFilters={initialFilters}
+        properties={properties}
+        savedSlugs={savedSlugs}
+      />
     </PublicShell>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
+import { useState, useSyncExternalStore } from "react";
 
 const storageKey = "estatepilot:saved-properties";
 
@@ -31,18 +31,22 @@ function getSavedSnapshot() {
 }
 
 type FavoriteButtonProps = {
+  initialSaved?: boolean;
   slug: string;
   label?: string;
   propertyTitle?: string;
 };
 
 export function FavoriteButton({
+  initialSaved = false,
   slug,
   label = "Save",
   propertyTitle,
 }: FavoriteButtonProps) {
+  const [syncing, setSyncing] = useState(false);
   const savedSnapshot = useSyncExternalStore(subscribe, getSavedSnapshot, () => "");
-  const saved = savedSnapshot.split("|").filter(Boolean).includes(slug);
+  const localSaved = savedSnapshot.split("|").filter(Boolean).includes(slug);
+  const saved = initialSaved || localSaved;
   const accessibleName = propertyTitle
     ? saved
       ? `Remove ${propertyTitle} from saved homes`
@@ -51,20 +55,40 @@ export function FavoriteButton({
       ? "Remove from saved homes"
       : `${label} property`;
 
-  function toggleSaved() {
+  async function toggleSaved() {
+    setSyncing(true);
+
     const current = readSaved();
     const next = current.includes(slug)
       ? current.filter((item) => item !== slug)
       : [...current, slug];
 
-    window.localStorage.setItem(storageKey, JSON.stringify(next));
-    window.dispatchEvent(new Event("estatepilot:favorites-updated"));
+    try {
+      const response = await fetch("/api/saved-properties", {
+        body: JSON.stringify({ slug }),
+        headers: { "Content-Type": "application/json" },
+        method: saved ? "DELETE" : "POST",
+      });
+
+      if (!response.ok) {
+        throw new Error("Save toggle failed");
+      }
+
+      window.localStorage.setItem(storageKey, JSON.stringify(next));
+      window.dispatchEvent(new Event("estatepilot:favorites-updated"));
+    } catch {
+      window.localStorage.setItem(storageKey, JSON.stringify(next));
+      window.dispatchEvent(new Event("estatepilot:favorites-updated"));
+    } finally {
+      setSyncing(false);
+    }
   }
 
   return (
     <button
       aria-label={accessibleName}
       aria-pressed={saved}
+      disabled={syncing}
       className={`rounded-full border px-4 py-2 text-xs font-semibold transition ${
         saved
           ? "border-luxury-accent/60 bg-luxury-accent/20 text-[#f3dca3]"
@@ -73,7 +97,7 @@ export function FavoriteButton({
       onClick={toggleSaved}
       type="button"
     >
-      {saved ? "Saved" : label}
+      {syncing ? "Saving..." : saved ? "Saved" : label}
     </button>
   );
 }

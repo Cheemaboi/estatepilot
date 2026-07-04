@@ -2,6 +2,7 @@ import { agents as mockAgents, appointments as mockAppointments, dashboardKpis, 
 import { featuredProperties, type FeaturedProperty } from "@/lib/mock-properties";
 import { hasSupabaseEnv } from "@/lib/supabase/env";
 import { createClient } from "@/lib/supabase/server";
+import { getCurrentSessionUser } from "@/lib/supabase/session";
 import type { Database } from "@/lib/supabase/database.types";
 
 export type WorkspaceSettings = {
@@ -413,4 +414,38 @@ export async function getAdminActivityLog(): Promise<AdminActivity[]> {
     entityType: item.entity_type,
     summary: item.summary,
   }));
+}
+
+export async function getSavedPropertySlugs(): Promise<string[]> {
+  if (!hasSupabaseEnv()) {
+    return [];
+  }
+
+  const session = await getCurrentSessionUser();
+
+  if (!session?.userId) {
+    return [];
+  }
+
+  const supabase = await createClient();
+  const { data: savedRows, error: savedError } = await supabase
+    .from("saved_properties")
+    .select("property_id")
+    .eq("user_id", session.userId);
+
+  if (savedError || !savedRows?.length) {
+    return [];
+  }
+
+  const propertyIds = savedRows.map((row) => row.property_id);
+  const { data: properties, error: propertyError } = await supabase
+    .from("properties")
+    .select("slug")
+    .in("id", propertyIds);
+
+  if (propertyError || !properties?.length) {
+    return [];
+  }
+
+  return properties.map((property) => property.slug);
 }

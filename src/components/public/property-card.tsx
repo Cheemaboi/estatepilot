@@ -8,11 +8,13 @@ import type { FeaturedProperty } from "@/lib/mock-properties";
 
 type PropertyCardProps = {
   property: FeaturedProperty;
+  initialSaved?: boolean;
   isMapActive?: boolean;
   onShowOnMap?: () => void;
 };
 
 export function PropertyCard({
+  initialSaved = false,
   property,
   isMapActive = false,
   onShowOnMap,
@@ -42,7 +44,11 @@ export function PropertyCard({
           </div>
         </Link>
         <div className="absolute right-4 top-4">
-          <FavoriteButton slug={property.slug} propertyTitle={property.title} />
+          <FavoriteButton
+            initialSaved={initialSaved}
+            slug={property.slug}
+            propertyTitle={property.title}
+          />
         </div>
       </div>
       <div className="p-4">

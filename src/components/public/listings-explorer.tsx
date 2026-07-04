@@ -22,6 +22,7 @@ export type ListingFilters = {
 type ListingsExplorerProps = {
   initialFilters: ListingFilters;
   properties: FeaturedProperty[];
+  savedSlugs?: string[];
 };
 
 const typeOptions = [
@@ -154,6 +155,7 @@ function filterProperties(properties: FeaturedProperty[], filters: ListingFilter
 export function ListingsExplorer({
   initialFilters,
   properties,
+  savedSlugs = [],
 }: ListingsExplorerProps) {
   const [filters, setFilters] = useState(initialFilters);
   const [activeMapSlug, setActiveMapSlug] = useState(
@@ -255,6 +257,7 @@ export function ListingsExplorer({
           <div className="mt-6 grid gap-6 xl:grid-cols-2">
             {filteredProperties.map((property) => (
               <PropertyCard
+                initialSaved={savedSlugs.includes(property.slug)}
                 isMapActive={property.slug === resolvedMapSlug}
                 key={property.slug}
                 onShowOnMap={() => setActiveMapSlug(property.slug)}
