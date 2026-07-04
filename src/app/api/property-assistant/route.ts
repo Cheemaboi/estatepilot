@@ -104,10 +104,15 @@ export async function POST(request: Request) {
       model: getOpenRouterModel(),
       source: "openrouter",
     });
-  } catch {
+  } catch (error) {
+    const fallbackReason =
+      error instanceof Error
+        ? error.message
+        : "OpenRouter unavailable; using local assistant.";
+
     return NextResponse.json({
       answer: localAnswer,
-      fallbackReason: "OpenRouter unavailable; using local assistant.",
+      fallbackReason,
       followUps: [
         "What should I ask before touring?",
         "How does this compare with similar homes?",

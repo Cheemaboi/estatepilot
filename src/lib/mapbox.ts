@@ -19,7 +19,7 @@ const mapPointsByMarket: Record<string, MapPoint> = {
 };
 
 export function hasMapboxToken() {
-  return Boolean(process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN);
+  return Boolean(process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN?.trim());
 }
 
 export function getMapPoint(property: FeaturedProperty) {
@@ -29,7 +29,7 @@ export function getMapPoint(property: FeaturedProperty) {
 }
 
 export function getMapboxStaticImageUrl(properties: FeaturedProperty[]) {
-  const token = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
+  const token = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN?.trim();
   const points = properties
     .map((property, index) => ({
       label: String(index + 1),

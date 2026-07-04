@@ -117,7 +117,7 @@ export default async function PropertyDetailPage({
           <MapPreview
             properties={[property]}
             title="Location intelligence"
-            description="Map-ready placement for neighborhood, commute, and private-tour context."
+            description="Mapbox-backed placement for neighborhood, commute, and private-tour context."
           />
         </div>
       </section>

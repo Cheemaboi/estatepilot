@@ -161,9 +161,14 @@ export async function POST(request: Request) {
         source: "openrouter",
         summary: aiResponse.summary,
       });
-  } catch {
+  } catch (error) {
+    const fallbackReason =
+      error instanceof Error
+        ? error.message
+        : "OpenRouter unavailable; using local matcher.";
+
     return NextResponse.json(
-      getLocalResponse(properties, body, "OpenRouter unavailable; using local matcher."),
+      getLocalResponse(properties, body, fallbackReason),
     );
   }
 }

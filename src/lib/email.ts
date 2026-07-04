@@ -17,9 +17,9 @@ type ResendResponse = {
 
 export function hasEmailEnv() {
   return Boolean(
-    process.env.RESEND_API_KEY &&
-      process.env.INQUIRY_EMAIL_TO &&
-      process.env.INQUIRY_EMAIL_FROM,
+    process.env.RESEND_API_KEY?.trim() &&
+      process.env.INQUIRY_EMAIL_TO?.trim() &&
+      process.env.INQUIRY_EMAIL_FROM?.trim(),
   );
 }
 
@@ -51,17 +51,17 @@ export async function sendInquiryEmail(input: InquiryEmailInput) {
   ].filter(Boolean);
   const response = await fetch("https://api.resend.com/emails", {
     body: JSON.stringify({
-      from: process.env.INQUIRY_EMAIL_FROM,
+    from: process.env.INQUIRY_EMAIL_FROM?.trim(),
       html: `<h2>New EstatePilot inquiry</h2><p>${detailLines
         .map((line) => escapeHtml(line))
         .join("</p><p>")}</p>`,
       reply_to: input.email,
       subject: `New inquiry for ${input.propertyTitle}`,
       text: detailLines.join("\n"),
-      to: process.env.INQUIRY_EMAIL_TO,
+      to: process.env.INQUIRY_EMAIL_TO?.trim(),
     }),
     headers: {
-      Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+      Authorization: `Bearer ${process.env.RESEND_API_KEY?.trim()}`,
       "Content-Type": "application/json",
       "Idempotency-Key": `estatepilot-${input.slug}-${Date.now()}`,
     },

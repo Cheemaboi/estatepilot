@@ -16,11 +16,11 @@ type OpenRouterResponse = {
 };
 
 export function getOpenRouterModel() {
-  return process.env.OPENROUTER_MODEL ?? "openrouter/auto";
+  return (process.env.OPENROUTER_MODEL ?? "openai/gpt-4.1-mini").trim();
 }
 
 export function hasOpenRouterEnv() {
-  return Boolean(process.env.OPENROUTER_API_KEY);
+  return Boolean(process.env.OPENROUTER_API_KEY?.trim());
 }
 
 export async function createOpenRouterJson<T>({
@@ -29,7 +29,7 @@ export async function createOpenRouterJson<T>({
   schemaName,
   schema,
 }: OpenRouterJsonRequest) {
-  const apiKey = process.env.OPENROUTER_API_KEY;
+  const apiKey = process.env.OPENROUTER_API_KEY?.trim();
 
   if (!apiKey) {
     return null;
@@ -43,25 +43,31 @@ export async function createOpenRouterJson<T>({
       ],
       model: getOpenRouterModel(),
       response_format: {
+        type: "json_schema",
         json_schema: {
           name: schemaName,
           schema,
           strict: true,
         },
-        type: "json_schema",
       },
+      structured_outputs: true,
     }),
     headers: {
       Authorization: `Bearer ${apiKey}`,
       "Content-Type": "application/json",
-      "HTTP-Referer": process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+      "HTTP-Referer": process.env.NEXT_PUBLIC_SITE_URL?.trim() ?? "http://localhost:3000",
       "X-OpenRouter-Title": "EstatePilot",
     },
     method: "POST",
   });
 
   if (!response.ok) {
-    throw new Error(`OpenRouter request failed with ${response.status}`);
+    const errorText = await response.text();
+    throw new Error(
+      `OpenRouter request failed with ${response.status}${
+        errorText ? `: ${errorText.slice(0, 220)}` : ""
+      }`,
+    );
   }
 
   const data = (await response.json()) as OpenRouterResponse;
