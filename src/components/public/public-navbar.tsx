@@ -35,10 +35,10 @@ export function PublicNavbar() {
             ))}
           </div>
           <div className="hidden items-center gap-2 sm:flex">
-            <ButtonLink href="/auth/login?next=/dashboard" variant="secondary">
+            <ButtonLink href="/auth/admin" variant="secondary">
               Admin
             </ButtonLink>
-            <ButtonLink href="/auth/login?next=/dashboard" variant="secondary">
+            <ButtonLink href="/auth/login" variant="secondary">
               Sign in
             </ButtonLink>
             <ButtonLink href="#contact" className="ml-1">
@@ -58,13 +58,13 @@ export function PublicNavbar() {
           ))}
           <Link
             className="shrink-0 rounded-full border border-white/20 bg-white/10 px-3 py-2 transition hover:border-luxury-accent/70 hover:bg-white/15 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-luxury-accent"
-            href="/auth/login?next=/dashboard"
+            href="/auth/admin"
           >
             Admin
           </Link>
           <Link
             className="shrink-0 rounded-full border border-white/20 bg-white/10 px-3 py-2 transition hover:border-luxury-accent/70 hover:bg-white/15 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-luxury-accent"
-            href="/auth/login?next=/dashboard"
+            href="/auth/login"
           >
             Sign in
           </Link>
