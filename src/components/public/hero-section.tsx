@@ -55,6 +55,14 @@ export function HeroSection() {
                 Smart matching, agent-ready workflows, and premium presentation
                 are designed to live in one product.
               </p>
+              <div className="mt-4 flex flex-wrap gap-2 text-sm">
+                <ButtonLink href="/auth/login" variant="secondary">
+                  Sign in
+                </ButtonLink>
+                <ButtonLink href="/dashboard" variant="ghost">
+                  Open dashboard
+                </ButtonLink>
+              </div>
             </div>
           </Card>
         </div>

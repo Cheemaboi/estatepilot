@@ -38,6 +38,22 @@ export const dashboardProperties = [
     status: "Draft",
     inquiries: 9,
   },
+  {
+    name: "Desert Canyon Compound",
+    market: "Scottsdale",
+    agent: "Renee Calder",
+    price: "$5.7M",
+    status: "Live",
+    inquiries: 21,
+  },
+  {
+    name: "Northstar Lake House",
+    market: "Lake Tahoe",
+    agent: "Sofia Hale",
+    price: "$7.4M",
+    status: "Review",
+    inquiries: 12,
+  },
 ];
 
 export const agents = [

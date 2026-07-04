@@ -17,6 +17,8 @@ const pointPositions = [
   "left-[58%] top-[44%]",
   "left-[72%] top-[24%]",
   "left-[35%] top-[68%]",
+  "left-[82%] top-[58%]",
+  "left-[14%] top-[64%]",
 ];
 
 function getMarketLabel(property: FeaturedProperty) {
@@ -78,7 +80,7 @@ export function MapPreview({
 
         {properties.length ? (
           <>
-            {properties.slice(0, 4).map((property, index) => {
+            {properties.slice(0, 6).map((property, index) => {
               const isActive = activeProperty?.slug === property.slug;
 
               return (
@@ -98,42 +100,42 @@ export function MapPreview({
             })}
 
             {activeProperty ? (
-              <div className="absolute inset-x-4 bottom-4 z-20 grid gap-4 rounded-[24px] border border-white/14 bg-public-bg/80 p-4 shadow-[0_18px_48px_rgba(0,0,0,0.34)] backdrop-blur-xl sm:grid-cols-[1fr_auto] sm:items-end">
-                <div>
-                  <div className="flex flex-wrap items-center gap-2">
-                    <p className="text-xs uppercase tracking-[0.2em] text-luxury-accent">
-                      Active pin
-                    </p>
-                    <span className="rounded-full border border-white/12 bg-white/[0.06] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-white/68">
-                      {activeProperty.location}
-                    </span>
-                  </div>
-                  <div className="mt-3 flex flex-wrap items-baseline gap-3">
-                    <h3 className="text-lg font-semibold text-white">
+              <div className="absolute inset-x-4 bottom-4 z-20 rounded-[24px] border border-white/14 bg-public-bg/84 p-4 shadow-[0_18px_48px_rgba(0,0,0,0.34)] backdrop-blur-xl">
+                <div className="flex flex-wrap items-center gap-2">
+                  <p className="text-xs uppercase tracking-[0.2em] text-luxury-accent">
+                    Active pin
+                  </p>
+                  <span className="rounded-full border border-white/12 bg-white/[0.06] px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-white/68">
+                    {activeProperty.location}
+                  </span>
+                </div>
+                <div className="mt-3 flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
+                  <div className="max-w-[20rem]">
+                    <h3 className="text-xl font-semibold leading-tight text-white">
                       {activeProperty.title}
                     </h3>
-                    <p className="text-base font-semibold text-luxury-accent">
-                      {activeProperty.price}
+                    <p className="mt-2 text-sm leading-6 text-white/66">
+                      {getMarketLabel(activeProperty)} view with neighborhood, commute,
+                      and private-tour context.
                     </p>
                   </div>
-                  <p className="mt-2 text-sm leading-6 text-white/66">
-                    {getMarketLabel(activeProperty)} view with neighborhood, commute,
-                    and private-tour context.
+                  <p className="text-2xl font-semibold text-luxury-accent">
+                    {activeProperty.price}
                   </p>
                 </div>
-                <div className="flex flex-wrap gap-2 sm:justify-end">
-                  <span className="rounded-full border border-white/12 bg-white/[0.05] px-3 py-2 text-xs font-semibold text-white">
+                <div className="mt-4 grid gap-2 sm:grid-cols-3">
+                  <span className="rounded-full border border-white/12 bg-white/[0.05] px-3 py-2 text-center text-xs font-semibold text-white">
                     {activeProperty.beds} beds
                   </span>
-                  <span className="rounded-full border border-white/12 bg-white/[0.05] px-3 py-2 text-xs font-semibold text-white">
+                  <span className="rounded-full border border-white/12 bg-white/[0.05] px-3 py-2 text-center text-xs font-semibold text-white">
                     {activeProperty.baths} baths
                   </span>
-                  <span className="rounded-full border border-white/12 bg-white/[0.05] px-3 py-2 text-xs font-semibold text-white">
+                  <span className="rounded-full border border-white/12 bg-white/[0.05] px-3 py-2 text-center text-xs font-semibold text-white">
                     {activeProperty.area}
                   </span>
                 </div>
                 <Link
-                  className="inline-flex min-h-10 w-fit items-center rounded-full border border-luxury-accent/50 px-4 text-sm font-semibold text-luxury-accent transition hover:bg-luxury-accent hover:text-public-bg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-luxury-accent"
+                  className="mt-4 inline-flex min-h-10 w-fit items-center rounded-full border border-luxury-accent/50 px-4 text-sm font-semibold text-luxury-accent transition hover:bg-luxury-accent hover:text-public-bg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-luxury-accent"
                   href={`/properties/${activeProperty.slug}`}
                 >
                   View property

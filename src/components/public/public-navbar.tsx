@@ -34,13 +34,17 @@ export function PublicNavbar() {
               </Link>
             ))}
           </div>
-          <ButtonLink
-            href="#contact"
-            variant="secondary"
-            className="hidden sm:inline-flex"
-          >
-            Book a consult
-          </ButtonLink>
+          <div className="hidden items-center gap-2 sm:flex">
+            <ButtonLink href="/dashboard" variant="ghost">
+              Admin
+            </ButtonLink>
+            <ButtonLink href="/auth/login" variant="secondary">
+              Sign in
+            </ButtonLink>
+            <ButtonLink href="#contact" className="ml-1">
+              Book a consult
+            </ButtonLink>
+          </div>
         </div>
         <div className="mt-4 flex gap-2 overflow-x-auto rounded-full border border-white/12 bg-white/[0.07] p-1.5 text-sm font-medium text-white/72 backdrop-blur-xl md:hidden">
           {navItems.map((item) => (
@@ -52,6 +56,18 @@ export function PublicNavbar() {
               {item.label}
             </Link>
           ))}
+          <Link
+            className="shrink-0 rounded-full px-3 py-2 transition hover:bg-white/10 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-luxury-accent"
+            href="/dashboard"
+          >
+            Admin
+          </Link>
+          <Link
+            className="shrink-0 rounded-full px-3 py-2 transition hover:bg-white/10 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-luxury-accent"
+            href="/auth/login"
+          >
+            Sign in
+          </Link>
         </div>
       </nav>
     </header>

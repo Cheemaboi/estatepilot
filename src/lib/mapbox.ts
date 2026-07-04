@@ -7,14 +7,23 @@ type MapPoint = {
 };
 
 const mapPointsBySlug: Record<string, MapPoint> = {
+  "belmont-modern-residence": { latitude: 36.1627, longitude: -86.7816, zoom: 11.8 },
   "crescent-garden-villa": { latitude: 30.2672, longitude: -97.7431, zoom: 11.8 },
+  "desert-canyon-compound": { latitude: 33.4942, longitude: -111.9261, zoom: 11.9 },
   "glass-ridge-estate": { latitude: 34.0259, longitude: -118.7798, zoom: 11.5 },
+  "harbor-court-residence": { latitude: 25.7617, longitude: -80.1918, zoom: 11.7 },
   "hudson-penthouse": { latitude: 40.7831, longitude: -73.9712, zoom: 12.2 },
+  "northstar-lake-house": { latitude: 39.0968, longitude: -120.0324, zoom: 11.6 },
 };
 
 const mapPointsByMarket: Record<string, MapPoint> = {
+  arizona: { latitude: 33.4942, longitude: -111.9261, zoom: 11.9 },
   austin: { latitude: 30.2672, longitude: -97.7431, zoom: 11.8 },
+  florida: { latitude: 25.7617, longitude: -80.1918, zoom: 11.7 },
   malibu: { latitude: 34.0259, longitude: -118.7798, zoom: 11.5 },
+  "lake tahoe": { latitude: 39.0968, longitude: -120.0324, zoom: 11.6 },
+  nashville: { latitude: 36.1627, longitude: -86.7816, zoom: 11.8 },
+  scottsdale: { latitude: 33.4942, longitude: -111.9261, zoom: 11.9 },
   "new york": { latitude: 40.7831, longitude: -73.9712, zoom: 12.2 },
 };
 
