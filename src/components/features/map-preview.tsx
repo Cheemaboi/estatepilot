@@ -11,6 +11,8 @@ type MapPreviewProps = {
   properties: FeaturedProperty[];
   title?: string;
   description?: string;
+  activeSlug?: string;
+  onActiveSlugChange?: (slug: string) => void;
 };
 
 function getMarketLabel(property: FeaturedProperty) {
@@ -21,19 +23,30 @@ export function MapPreview({
   properties,
   title = "Market map preview",
   description = "Mapbox-backed location surface with a polished demo fallback.",
+  activeSlug,
+  onActiveSlugChange,
 }: MapPreviewProps) {
-  const [activeSlug, setActiveSlug] = useState(properties[0]?.slug ?? "");
+  const [internalSlug, setInternalSlug] = useState(properties[0]?.slug ?? "");
   const [mapReady, setMapReady] = useState(false);
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const markersRef = useRef<mapboxgl.Marker[]>([]);
   const token = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN?.trim();
 
+  const selectedSlug = activeSlug ?? internalSlug;
+  const setSelectedSlug = onActiveSlugChange ?? setInternalSlug;
+
+  const resolvedSlug = useMemo(() => {
+    if (properties.some((property) => property.slug === selectedSlug)) {
+      return selectedSlug;
+    }
+
+    return properties[0]?.slug ?? "";
+  }, [properties, selectedSlug]);
+
   const activeProperty = useMemo(
-    () =>
-      properties.find((property) => property.slug === activeSlug) ??
-      properties[0],
-    [activeSlug, properties],
+    () => properties.find((property) => property.slug === resolvedSlug) ?? properties[0],
+    [properties, resolvedSlug],
   );
 
   const activePoint = useMemo(
@@ -107,7 +120,7 @@ export function MapPreview({
     markersRef.current = [];
 
     mapEntries.forEach(({ label, point, property }) => {
-      const isActive = property.slug === activeSlug;
+      const isActive = property.slug === resolvedSlug;
       const element = document.createElement("button");
       element.type = "button";
       element.setAttribute("aria-label", `Show ${property.title}`);
@@ -119,7 +132,7 @@ export function MapPreview({
       ].join(" ");
       element.textContent = label;
       element.addEventListener("click", () => {
-        setActiveSlug(property.slug);
+        setSelectedSlug(property.slug);
       });
 
       const marker = new mapboxgl.Marker({ anchor: "center", element })
@@ -128,7 +141,7 @@ export function MapPreview({
 
       markersRef.current.push(marker);
     });
-  }, [activeSlug, mapEntries, mapReady]);
+  }, [mapEntries, mapReady, resolvedSlug, setSelectedSlug]);
 
   return (
     <div className="grid gap-4">
@@ -193,7 +206,7 @@ export function MapPreview({
 
       <div className="flex flex-wrap gap-2 overflow-x-auto pb-1">
         {mapEntries.map(({ property }) => {
-          const isActive = property.slug === activeSlug;
+          const isActive = property.slug === resolvedSlug;
 
           return (
             <button
@@ -203,7 +216,7 @@ export function MapPreview({
                   : "border-white/12 bg-white/[0.06] text-white/72 hover:border-luxury-accent/60 hover:text-white"
               }`}
               key={property.slug}
-              onClick={() => setActiveSlug(property.slug)}
+              onClick={() => setSelectedSlug(property.slug)}
               type="button"
             >
               <span className="block text-sm font-semibold">{property.title}</span>

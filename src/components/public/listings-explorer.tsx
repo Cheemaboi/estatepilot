@@ -156,10 +156,20 @@ export function ListingsExplorer({
   properties,
 }: ListingsExplorerProps) {
   const [filters, setFilters] = useState(initialFilters);
+  const [activeMapSlug, setActiveMapSlug] = useState(
+    properties[0]?.slug ?? "",
+  );
   const filteredProperties = useMemo(
     () => filterProperties(properties, filters),
     [filters, properties],
   );
+  const resolvedMapSlug = useMemo(() => {
+    if (filteredProperties.some((property) => property.slug === activeMapSlug)) {
+      return activeMapSlug;
+    }
+
+    return filteredProperties[0]?.slug ?? "";
+  }, [activeMapSlug, filteredProperties]);
 
   function updateFilter(key: keyof ListingFilters, value: string) {
     setFilters((current) => ({ ...current, [key]: value }));
@@ -244,7 +254,12 @@ export function ListingsExplorer({
         {filteredProperties.length ? (
           <div className="mt-6 grid gap-6 xl:grid-cols-2">
             {filteredProperties.map((property) => (
-              <PropertyCard key={property.slug} property={property} />
+              <PropertyCard
+                isMapActive={property.slug === resolvedMapSlug}
+                key={property.slug}
+                onShowOnMap={() => setActiveMapSlug(property.slug)}
+                property={property}
+              />
             ))}
           </div>
         ) : (
@@ -265,6 +280,8 @@ export function ListingsExplorer({
         className="sticky top-6 hidden h-fit overflow-hidden p-3 lg:block"
       >
         <MapPreview
+          activeSlug={resolvedMapSlug}
+          onActiveSlugChange={setActiveMapSlug}
           properties={filteredProperties}
           title="Interactive map preview"
           description="Pins, active property details, and routing are local placeholders until a map provider is connected."

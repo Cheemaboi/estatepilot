@@ -1,17 +1,28 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FavoriteButton } from "@/components/features/favorite-button";
+import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import type { FeaturedProperty } from "@/lib/mock-properties";
 
 type PropertyCardProps = {
   property: FeaturedProperty;
+  isMapActive?: boolean;
+  onShowOnMap?: () => void;
 };
 
-export function PropertyCard({ property }: PropertyCardProps) {
+export function PropertyCard({
+  property,
+  isMapActive = false,
+  onShowOnMap,
+}: PropertyCardProps) {
   return (
-    <Card className="group h-full overflow-hidden p-3 transition duration-300 hover:-translate-y-1 hover:border-luxury-accent/45">
+    <Card
+      className={`group h-full overflow-hidden p-3 transition duration-300 hover:-translate-y-1 ${
+        isMapActive ? "border-luxury-accent/55 shadow-[0_18px_48px_rgba(216,189,134,0.12)]" : "hover:border-luxury-accent/45"
+      }`}
+    >
       <div className="relative">
         <Link
           href={`/properties/${property.slug}`}
@@ -67,6 +78,16 @@ export function PropertyCard({ property }: PropertyCardProps) {
             <dd className="mt-1 font-semibold text-white">{property.area}</dd>
           </div>
         </dl>
+        {onShowOnMap ? (
+          <div className="mt-5 flex items-center gap-3">
+            <Button className="px-4" onClick={onShowOnMap} type="button" variant="secondary">
+              Show on map
+            </Button>
+            <p className="text-xs uppercase tracking-[0.14em] text-white/45">
+              {isMapActive ? "Selected on map" : "Sync with map"}
+            </p>
+          </div>
+        ) : null}
       </div>
     </Card>
   );
