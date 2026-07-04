@@ -140,7 +140,7 @@ export default async function PropertyDetailPage({
                 className="rounded-2xl border border-luxury-accent/25 bg-public-bg/55 p-4 text-white shadow-[0_14px_34px_rgba(0,0,0,0.22)] backdrop-blur-md"
                 key={amenity}
               >
-                <span className="mr-2 text-luxury-accent">•</span>
+                <span className="mr-2 text-luxury-accent">-</span>
                 {amenity}
               </div>
             ))}

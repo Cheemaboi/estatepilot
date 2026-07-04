@@ -38,7 +38,10 @@ export function SavedPropertiesPanel({
   properties,
 }: SavedPropertiesPanelProps) {
   const savedSnapshot = useSyncExternalStore(subscribe, getSavedSnapshot, () => "");
-  const localSavedSlugs = useMemo(() => savedSnapshot.split("|").filter(Boolean), [savedSnapshot]);
+  const localSavedSlugs = useMemo(
+    () => savedSnapshot.split("|").filter(Boolean),
+    [savedSnapshot],
+  );
   const savedSlugs = useMemo(
     () => Array.from(new Set([...initialSavedSlugs, ...localSavedSlugs])),
     [initialSavedSlugs, localSavedSlugs],
@@ -61,7 +64,7 @@ export function SavedPropertiesPanel({
   return (
     <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
       {savedProperties.map((property) => (
-        <PropertyCard key={property.slug} property={property} />
+        <PropertyCard key={property.slug} initialSaved property={property} />
       ))}
     </div>
   );

@@ -147,7 +147,7 @@ export function AppointmentScheduler({ properties }: AppointmentSchedulerProps) 
         <label className="grid gap-2 text-sm font-medium text-dashboard-muted md:col-span-2 xl:col-span-3">
           <span>Notes</span>
           <textarea
-            className="min-h-24 w-full rounded-full border border-black/10 bg-white px-4 py-3 text-sm text-dashboard-text transition placeholder:text-dashboard-muted/60 focus:border-green-accent focus:outline-none"
+            className="min-h-24 w-full rounded-[24px] border border-black/10 bg-white px-4 py-3 text-sm text-dashboard-text transition placeholder:text-dashboard-muted/60 focus:border-green-accent focus:outline-none"
             onChange={(event) => setNotes(event.target.value)}
             placeholder="Agenda, access notes, preferred follow-up."
             value={notes}
@@ -168,4 +168,3 @@ export function AppointmentScheduler({ properties }: AppointmentSchedulerProps) 
     </DashboardCard>
   );
 }
-
