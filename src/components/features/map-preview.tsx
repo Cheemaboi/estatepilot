@@ -67,7 +67,6 @@ export function MapPreview({
     const map = new mapboxgl.Map({
       center: [activePoint.longitude, activePoint.latitude],
       container: mapContainerRef.current,
-      cooperativeGestures: true,
       style: "mapbox://styles/mapbox/satellite-streets-v12",
       zoom: activePoint.zoom,
     });
@@ -146,25 +145,26 @@ export function MapPreview({
         </p>
       </div>
 
-        <div className="relative min-h-[460px] overflow-hidden rounded-[28px] border border-white/12 bg-[radial-gradient(circle_at_28%_22%,rgba(216,189,134,0.18),transparent_26%),linear-gradient(145deg,rgba(22,36,29,0.96),rgba(7,18,13,0.96))]">
-          {token ? (
-            <>
-              {backdropUrl ? (
-                <Image
-                  alt="Mapbox map preview backdrop"
-                  className="object-cover opacity-55 saturate-75"
-                  fill
-                  sizes="(min-width: 1024px) 520px, 100vw"
-                  src={backdropUrl}
-                />
-              ) : null}
-              <div ref={mapContainerRef} className="absolute inset-0" />
-              {!mapReady ? (
-                <div className="absolute inset-0 grid place-items-center bg-public-bg/60 text-sm font-semibold uppercase tracking-[0.18em] text-white/60">
+      <div className="relative min-h-[460px] overflow-hidden rounded-[28px] border border-white/12 bg-[radial-gradient(circle_at_28%_22%,rgba(216,189,134,0.18),transparent_26%),linear-gradient(145deg,rgba(22,36,29,0.96),rgba(7,18,13,0.96))]">
+        {token ? (
+          <>
+            {backdropUrl ? (
+              <Image
+                alt="Mapbox map preview backdrop"
+                aria-hidden="true"
+                className="pointer-events-none object-cover opacity-55 saturate-75"
+                fill
+                sizes="(min-width: 1024px) 520px, 100vw"
+                src={backdropUrl}
+              />
+            ) : null}
+            <div ref={mapContainerRef} className="absolute inset-0 z-10" />
+            {!mapReady ? (
+              <div className="absolute inset-0 z-20 grid place-items-center bg-public-bg/60 text-sm font-semibold uppercase tracking-[0.18em] text-white/60">
                 Loading map
               </div>
             ) : null}
-            <div className="absolute left-4 top-4 z-10 rounded-full border border-white/12 bg-public-bg/78 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/68 backdrop-blur-md">
+            <div className="absolute left-4 top-4 z-30 rounded-full border border-white/12 bg-public-bg/78 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/68 backdrop-blur-md">
               Drag, zoom, explore
             </div>
           </>
