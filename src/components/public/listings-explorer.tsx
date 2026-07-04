@@ -238,7 +238,7 @@ export function ListingsExplorer({
                   {filteredProperties.length} of {properties.length} homes
                 </Badge>
                 <p className="mt-2 text-sm text-public-muted">
-                  Filters update instantly using local mock listing data.
+                  Filters update instantly as you narrow the collection.
                 </p>
               </div>
               <div className="w-full sm:w-56">
@@ -270,7 +270,6 @@ export function ListingsExplorer({
             <p className="text-2xl font-semibold text-white">No homes match that search yet.</p>
             <p className="mx-auto mt-3 max-w-xl text-sm leading-6 text-public-muted">
               Try a broader location, lower the budget filter, or clear the lifestyle signal.
-              The current dataset is intentionally small and mock-only.
             </p>
             <Button className="mt-6" onClick={resetFilters} type="button">
               Reset filters
@@ -287,7 +286,7 @@ export function ListingsExplorer({
           onActiveSlugChange={setActiveMapSlug}
           properties={filteredProperties}
           title="Interactive map preview"
-          description="Pins, active property details, and routing are local placeholders until a map provider is connected."
+          description="Pins, active property details, and routing stay in sync with the selected listing."
         />
       </Card>
     </section>

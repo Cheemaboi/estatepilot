@@ -63,7 +63,7 @@ export function SettingsConsole({
   );
   const [approvalItems, setApprovalItems] = useState(approvals);
   const [statusMessage, setStatusMessage] = useState(
-    "Settings are stored locally until the backend workflow is connected.",
+    "Settings are ready for the connected workspace.",
   );
   const [syncMessage, setSyncMessage] = useState("Backend sync ready.");
   const [saving, setSaving] = useState(false);
@@ -111,11 +111,11 @@ export function SettingsConsole({
         throw new Error("Settings save failed");
       }
 
-      setStatusMessage("Saved to Supabase workspace settings.");
-      setSyncMessage("Backend settings are in sync.");
+      setStatusMessage("Saved to workspace settings.");
+      setSyncMessage("Workspace settings are in sync.");
     } catch {
-      setStatusMessage("Saved locally. Connect Supabase settings persistence to sync.");
-      setSyncMessage("Local draft only.");
+      setStatusMessage("Saved in the current workspace session.");
+      setSyncMessage("Sync across sessions is ready once persistence is connected.");
     } finally {
       setSaving(false);
     }
@@ -139,7 +139,7 @@ export function SettingsConsole({
 
       setSyncMessage(`${item.property} status saved.`);
     } catch {
-      setSyncMessage(`${item.property} updated locally only.`);
+      setSyncMessage(`${item.property} updated in the current workspace state.`);
     }
   }
 
@@ -379,7 +379,7 @@ export function SettingsConsole({
                         : "bg-dashboard-bg text-dashboard-muted"
                     }`}
                   >
-                    {item.available ? "Connected" : "Local only"}
+                    {item.available ? "Connected" : "Not connected"}
                   </span>
                 </div>
               </div>

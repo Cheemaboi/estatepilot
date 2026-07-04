@@ -12,11 +12,10 @@ export default function NotFound() {
             404
           </p>
           <h1 className="mt-5 text-4xl font-semibold text-white sm:text-5xl">
-            This address is not in the portfolio.
+            This address does not match an active listing.
           </h1>
           <p className="mt-5 text-base leading-7 text-public-muted">
-            The page may have moved, or the listing may not be available in this
-            static experience.
+            The page may have moved, or the listing may no longer be available.
           </p>
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
             <ButtonLink href="/listings">Browse listings</ButtonLink>

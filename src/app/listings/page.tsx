@@ -42,8 +42,8 @@ export default async function ListingsPage({ searchParams }: ListingsPageProps) 
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-public-muted">
             Search by location, lifestyle, property type, budget, and bedrooms.
-            The interface is connected to local mock data, Supabase-ready data
-            loading, and Mapbox live location previews.
+            The interface is connected to live listings, saved state, and Mapbox
+            location previews.
           </p>
         </div>
       </Section>

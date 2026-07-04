@@ -130,7 +130,7 @@ export function MarketPulsePanel({ items }: { items: ListingItem[] }) {
     <DashboardCard className="p-5">
       <h2 className="text-lg font-semibold text-dashboard-text">Market pulse</h2>
       <p className="mt-1 text-sm text-dashboard-muted">
-        Inventory concentration and approval mix across the active portfolio.
+        Inventory concentration and approval mix across the current listing base.
       </p>
       <div className="mt-5 rounded-2xl border border-black/5 bg-[radial-gradient(circle_at_35%_20%,rgba(63,125,88,0.22),transparent_26%),linear-gradient(145deg,#f0f5ef,#ffffff)] p-5">
         <p className="text-3xl font-semibold text-deep-green">

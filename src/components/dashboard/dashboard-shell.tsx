@@ -63,8 +63,8 @@ export function DashboardShell({
               Operational snapshot
             </p>
             <p className="mt-2 text-sm leading-6 text-dashboard-muted">
-              Supabase-backed data is used when available, with mock data keeping
-              local development stable.
+              Workspace data keeps the dashboard current while the product stays
+              ready for the connected services behind it.
             </p>
           </div>
         </aside>

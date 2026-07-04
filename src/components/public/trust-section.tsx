@@ -12,8 +12,8 @@ export function TrustSection() {
         >
           <p>
             The public site is designed to feel editorial and selective, while
-            the product foundation stays ready for the clean operational
-            dashboard planned next.
+            the product foundation stays ready for a clean operational
+            dashboard.
           </p>
         </SectionHeading>
         <Card variant="glass" className="p-6 sm:p-8">
@@ -32,9 +32,9 @@ export function TrustSection() {
           </div>
           <div className="mt-6 rounded-[24px] border border-luxury-accent/20 bg-luxury-accent/10 p-5">
             <p className="text-sm leading-7 text-white/76">
-              Every visible surface stays buyer-facing and premium in this
-              phase. Admin workflows, lead management, and live listing data
-              remain intentionally out of scope until later phases.
+              Every visible surface stays buyer-facing and premium. Admin
+              workflows, lead management, and live listing data live in the
+              internal workspace.
             </p>
           </div>
         </Card>

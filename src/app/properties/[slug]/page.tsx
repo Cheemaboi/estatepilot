@@ -153,8 +153,8 @@ export default async function PropertyDetailPage({
               Ask what makes this home fit your lifestyle.
             </p>
             <p className="mt-3 text-sm leading-6 text-public-muted">
-              OpenRouter can power this assistant when configured, with local
-              guidance available as a reliable demo fallback.
+              OpenRouter powers the assistant experience, with EstatePilot keeping
+              the guidance polished and context-aware.
             </p>
             <PropertyAssistant property={property} />
           </Card>

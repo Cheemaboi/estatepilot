@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import mapboxgl from "mapbox-gl";
 import Link from "next/link";
+import mapboxgl from "mapbox-gl";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { FeaturedProperty } from "@/lib/mock-properties";
 import { getMapPoint, getMapboxStaticImageUrl, hasMapboxToken } from "@/lib/mapbox";
@@ -22,7 +22,7 @@ function getMarketLabel(property: FeaturedProperty) {
 export function MapPreview({
   properties,
   title = "Market map preview",
-  description = "Mapbox-backed location surface with a polished demo fallback.",
+  description = "Mapbox-backed location surface with interactive listings and pins.",
   activeSlug,
   onActiveSlugChange,
 }: MapPreviewProps) {
@@ -62,7 +62,15 @@ export function MapPreview({
           property,
           label: String(index + 1),
         }))
-        .filter((entry): entry is { label: string; point: NonNullable<ReturnType<typeof getMapPoint>>; property: FeaturedProperty } => Boolean(entry.point)),
+        .filter(
+          (
+            entry,
+          ): entry is {
+            label: string;
+            point: NonNullable<ReturnType<typeof getMapPoint>>;
+            property: FeaturedProperty;
+          } => Boolean(entry.point),
+        ),
     [properties],
   );
 
@@ -159,7 +167,7 @@ export function MapPreview({
           </p>
         </div>
         <p className="rounded-full border border-white/12 bg-public-bg/58 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/68 backdrop-blur-md">
-          {hasMapboxToken() ? "Mapbox live" : "Demo map fallback"}
+          {hasMapboxToken() ? "Mapbox live" : "Map preview"}
         </p>
       </div>
 
@@ -194,7 +202,7 @@ export function MapPreview({
                 {activeProperty.title}
               </p>
               <p className="text-[11px] uppercase tracking-[0.14em] text-white/60">
-                {activeProperty.location} · {activeProperty.price}
+                {activeProperty.location} | {activeProperty.price}
               </p>
             </div>
           </>
@@ -202,7 +210,7 @@ export function MapPreview({
           <div className="absolute inset-0 grid place-items-center p-8">
             <div className="max-w-sm rounded-[24px] border border-white/12 bg-public-bg/72 p-5 text-center backdrop-blur-xl">
               <p className="text-xs font-semibold uppercase tracking-[0.22em] text-luxury-accent">
-                Demo map fallback
+                Map preview
               </p>
               <p className="mt-3 text-sm leading-6 text-white/70">
                 Add a public Mapbox token to enable pan, zoom, and pin interaction.
@@ -228,8 +236,12 @@ export function MapPreview({
               type="button"
             >
               <span className="block text-sm font-semibold">{property.title}</span>
-              <span className={`mt-1 block text-[11px] uppercase tracking-[0.14em] ${isActive ? "text-public-bg/82" : "text-white/54"}`}>
-                {getMarketLabel(property)} · {property.price}
+              <span
+                className={`mt-1 block text-[11px] uppercase tracking-[0.14em] ${
+                  isActive ? "text-public-bg/82" : "text-white/54"
+                }`}
+              >
+                {getMarketLabel(property)} | {property.price}
               </span>
             </button>
           );

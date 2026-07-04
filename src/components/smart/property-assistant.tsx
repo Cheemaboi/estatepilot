@@ -26,7 +26,7 @@ export function PropertyAssistant({ property }: PropertyAssistantProps) {
   const [followUps, setFollowUps] = useState(suggestedPropertyQuestions);
   const [source, setSource] = useState<"local" | "openrouter">("local");
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
-  const [statusMessage, setStatusMessage] = useState("Local assistant ready.");
+  const [statusMessage, setStatusMessage] = useState("EstatePilot assistant ready.");
 
   async function askQuestion(nextQuestion = question) {
     setQuestion(nextQuestion);
@@ -58,7 +58,7 @@ export function PropertyAssistant({ property }: PropertyAssistantProps) {
       setFollowUps(suggestedPropertyQuestions);
       setSource("local");
       setStatus("error");
-      setStatusMessage("AI request could not complete, so EstatePilot used local guidance.");
+      setStatusMessage("AI request could not complete, so EstatePilot used guided responses.");
     }
   }
 
@@ -99,7 +99,7 @@ export function PropertyAssistant({ property }: PropertyAssistantProps) {
       <div className="mt-5 rounded-[24px] border border-luxury-accent/25 bg-public-bg/55 p-5 text-sm leading-7 text-public-muted">
         <div className="mb-3 flex flex-wrap items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em]">
           <span className="rounded-full border border-luxury-accent/35 bg-luxury-accent/12 px-3 py-1 text-luxury-accent">
-            {source === "openrouter" ? "OpenRouter AI" : "Local fallback"}
+            {source === "openrouter" ? "OpenRouter AI" : "EstatePilot AI"}
           </span>
           <span className="text-white/45">
             {status === "error" ? "Recovered" : statusMessage}

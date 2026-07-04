@@ -12,15 +12,15 @@ export function CtaSection() {
         <div className="absolute inset-y-0 right-0 hidden w-1/2 bg-[linear-gradient(120deg,transparent,rgba(216,189,134,0.2))] lg:block" />
         <div className="relative max-w-3xl">
           <p className="text-xs font-semibold uppercase tracking-[0.24em] text-luxury-accent">
-            Built for the next phase
+            Private client launch
           </p>
           <h2 className="mt-4 text-4xl font-semibold leading-tight text-white sm:text-5xl">
-            Launch the public experience now. Connect the operating system next.
+            Launch the public experience with a brand that feels complete.
           </h2>
           <p className="mt-5 text-lg leading-8 text-public-muted">
-            EstatePilot is staged with OpenRouter smart matching, Mapbox-ready
-            location previews, inquiry email hooks, and the light SaaS dashboard
-            without mixing the two visual languages.
+            EstatePilot combines luxury listings, smart search, location
+            exploration, inquiry capture, and an agency dashboard in one
+            polished product.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <ButtonLink href="#featured">Explore homes</ButtonLink>

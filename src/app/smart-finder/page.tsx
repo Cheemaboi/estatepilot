@@ -25,7 +25,7 @@ export default async function SmartFinderPage() {
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-public-muted">
               Describe what you want in plain language and EstatePilot will rank
-              homes with OpenRouter-ready matching and a reliable local fallback.
+              homes with guided matching and a clean ranked readout.
             </p>
           </div>
           <Card variant="glass" className="p-6">

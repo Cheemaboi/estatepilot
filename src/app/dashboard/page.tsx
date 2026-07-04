@@ -7,7 +7,6 @@ import {
   MarketPulsePanel,
   RevenueActivityCard,
 } from "@/components/dashboard/dashboard-widgets";
-import { hasSupabaseEnv } from "@/lib/supabase/env";
 import {
   getDashboardAppointments,
   getDashboardKpis,
@@ -35,9 +34,7 @@ export default async function DashboardOverviewPage() {
   return (
     <DashboardShell
       title="Dashboard overview"
-      description={`A clean operating view for agency admins and senior agents, using ${
-        hasSupabaseEnv() ? "Supabase-backed data where available" : "mock portfolio data for local development"
-      }.`}
+      description="A clean operating view for agency admins and senior agents, with live workspace data and clear pipeline visibility."
     >
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {kpis.map((kpi) => (

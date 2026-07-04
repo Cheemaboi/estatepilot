@@ -12,12 +12,12 @@ export function FeaturedProperties({ properties }: FeaturedPropertiesProps) {
     <Section id="featured">
       <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
         <SectionHeading
-          eyebrow="Featured portfolio"
+          eyebrow="Featured homes"
           title="Homes selected for presence, privacy, and architectural pull."
         >
           <p>
-            Static showcase data for now, structured so the cards can later be
-            connected to Supabase without changing the public visual system.
+            Curated listings presented in a compact editorial grid with a clean
+            path into the property pages.
           </p>
         </SectionHeading>
         <ButtonLink href="#contact" variant="secondary" className="w-fit">

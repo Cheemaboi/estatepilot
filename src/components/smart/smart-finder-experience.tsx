@@ -80,7 +80,7 @@ export function SmartFinderExperience({ properties }: SmartFinderExperienceProps
       getLocalMatches(properties, nextQuery, nextBudget, nextTimeline, nextMustHaves),
     );
     setSource("local");
-    setSummary("Previewing with local matching. Run Match for the AI-ranked readout.");
+    setSummary("Previewing with EstatePilot matching. Run Match for the ranked readout.");
   }
 
   function toggleMustHave(signal: string) {
@@ -136,7 +136,7 @@ export function SmartFinderExperience({ properties }: SmartFinderExperienceProps
     } catch {
       setMatches(getLocalMatches(properties, nextQuery, budget, timeline, mustHaves));
       setSource("local");
-      setSummary("Something interrupted the AI request, so EstatePilot used local matching.");
+      setSummary("Something interrupted the AI request, so EstatePilot used guided matching.");
       setStatus("error");
     }
   }
@@ -249,7 +249,7 @@ export function SmartFinderExperience({ properties }: SmartFinderExperienceProps
                 </p>
                 <div className="mt-3 flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em]">
                   <span className="rounded-full border border-luxury-accent/35 bg-luxury-accent/12 px-3 py-1 text-luxury-accent">
-                    {source === "openrouter" ? "OpenRouter AI" : "Local fallback"}
+                    {source === "openrouter" ? "OpenRouter AI" : "EstatePilot AI"}
                   </span>
                   <span className="text-white/50">
                     {status === "error" ? "Recovered" : "Ranked"}
