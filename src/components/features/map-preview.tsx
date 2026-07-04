@@ -86,7 +86,11 @@ export function MapPreview({
 
     map.addControl(new mapboxgl.NavigationControl({ visualizePitch: true }), "top-right");
     map.addControl(new mapboxgl.FullscreenControl(), "top-right");
-    map.on("load", () => setMapReady(true));
+    map.on("load", () => {
+      map.resize();
+      setMapReady(true);
+    });
+    requestAnimationFrame(() => map.resize());
     mapRef.current = map;
 
     return () => {
@@ -159,7 +163,7 @@ export function MapPreview({
         </p>
       </div>
 
-      <div className="relative min-h-[460px] overflow-hidden rounded-[28px] border border-white/12 bg-[radial-gradient(circle_at_28%_22%,rgba(216,189,134,0.18),transparent_26%),linear-gradient(145deg,rgba(22,36,29,0.96),rgba(7,18,13,0.96))]">
+      <div className="relative h-[460px] overflow-hidden rounded-[28px] border border-white/12 bg-[radial-gradient(circle_at_28%_22%,rgba(216,189,134,0.18),transparent_26%),linear-gradient(145deg,rgba(22,36,29,0.96),rgba(7,18,13,0.96))]">
         {token ? (
           <>
             {backdropUrl ? (
@@ -172,7 +176,11 @@ export function MapPreview({
                 src={backdropUrl}
               />
             ) : null}
-            <div ref={mapContainerRef} className="absolute inset-0 z-10" />
+            <div
+              ref={mapContainerRef}
+              className="absolute inset-0 z-10"
+              style={{ height: "100%", width: "100%" }}
+            />
             {!mapReady ? (
               <div className="absolute inset-0 z-20 grid place-items-center bg-public-bg/60 text-sm font-semibold uppercase tracking-[0.18em] text-white/60">
                 Loading map
