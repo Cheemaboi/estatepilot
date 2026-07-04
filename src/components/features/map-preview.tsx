@@ -90,9 +90,10 @@ export function MapPreview({
       return;
     }
 
-    mapRef.current.easeTo({
+    mapRef.current.flyTo({
       center: [activePoint.longitude, activePoint.latitude],
-      duration: 700,
+      essential: true,
+      speed: 1.2,
       zoom: activePoint.zoom,
     });
   }, [activePoint, mapReady]);
@@ -164,8 +165,16 @@ export function MapPreview({
                 Loading map
               </div>
             ) : null}
-            <div className="absolute left-4 top-4 z-30 rounded-full border border-white/12 bg-public-bg/78 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/68 backdrop-blur-md">
-              Drag, zoom, explore
+            <div className="absolute left-4 top-4 z-30 max-w-[62%] rounded-[20px] border border-white/12 bg-public-bg/78 px-3 py-2 backdrop-blur-md">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-luxury-accent">
+                Selected listing
+              </p>
+              <p className="mt-1 truncate text-sm font-semibold text-white">
+                {activeProperty.title}
+              </p>
+              <p className="text-[11px] uppercase tracking-[0.14em] text-white/60">
+                {activeProperty.location} · {activeProperty.price}
+              </p>
             </div>
           </>
         ) : (
@@ -188,7 +197,7 @@ export function MapPreview({
 
           return (
             <button
-              className={`shrink-0 rounded-full border px-3 py-2 text-sm font-semibold transition ${
+              className={`shrink-0 rounded-[20px] border px-4 py-3 text-left transition ${
                 isActive
                   ? "border-luxury-accent bg-luxury-accent text-public-bg"
                   : "border-white/12 bg-white/[0.06] text-white/72 hover:border-luxury-accent/60 hover:text-white"
@@ -197,7 +206,10 @@ export function MapPreview({
               onClick={() => setActiveSlug(property.slug)}
               type="button"
             >
-              {getMarketLabel(property)}
+              <span className="block text-sm font-semibold">{property.title}</span>
+              <span className={`mt-1 block text-[11px] uppercase tracking-[0.14em] ${isActive ? "text-public-bg/82" : "text-white/54"}`}>
+                {getMarketLabel(property)} · {property.price}
+              </span>
             </button>
           );
         })}
