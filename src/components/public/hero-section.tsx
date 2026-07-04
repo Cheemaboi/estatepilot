@@ -56,10 +56,10 @@ export function HeroSection() {
                 are designed to live in one product.
               </p>
               <div className="mt-4 flex flex-wrap gap-2 text-sm">
-                <ButtonLink href="/auth/login" variant="secondary">
+                <ButtonLink href="/auth/login?next=/dashboard" variant="secondary">
                   Sign in
                 </ButtonLink>
-                <ButtonLink href="/dashboard" variant="ghost">
+                <ButtonLink href="/auth/login?next=/dashboard" variant="secondary">
                   Open dashboard
                 </ButtonLink>
               </div>

@@ -101,7 +101,7 @@ export const featuredProperties: FeaturedProperty[] = [
     location: "Miami, Florida",
     price: "$4.8M",
     image:
-      "https://images.unsplash.com/photo-1600585154511-9a0f5b8fdfb8?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1200&q=80",
     gallery: [
       "https://images.unsplash.com/photo-1600585152909-3f27c4c1c2cc?auto=format&fit=crop&w=1400&q=80",
       "https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=900&q=80",

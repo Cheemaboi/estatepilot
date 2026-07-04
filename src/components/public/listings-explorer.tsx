@@ -177,7 +177,7 @@ export function ListingsExplorer({
   }
 
   return (
-    <section className="mx-auto grid w-full max-w-7xl gap-6 px-5 pb-24 sm:px-8 lg:grid-cols-[minmax(0,1fr)_400px] lg:px-10">
+    <section className="mx-auto grid w-full max-w-7xl gap-6 px-5 pb-24 sm:px-8 lg:grid-cols-[minmax(0,1fr)_520px] lg:px-10">
       <div>
         <Card variant="glass" className="p-4 sm:p-5">
           <div className="grid gap-5">

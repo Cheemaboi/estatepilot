@@ -5,11 +5,13 @@ import { InputField } from "@/components/ui/field";
 type LoginPageProps = {
   searchParams: Promise<{
     message?: string;
+    next?: string;
   }>;
 };
 
 export default async function LoginPage({ searchParams }: LoginPageProps) {
-  const { message } = await searchParams;
+  const { message, next } = await searchParams;
+  const nextRoute = next?.startsWith("/") ? next : "/dashboard";
 
   return (
     <main className="min-h-screen bg-dashboard-bg px-5 py-10 text-dashboard-text">
@@ -35,6 +37,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           <div className="grid gap-8 lg:grid-cols-2">
             <form action={signIn} className="grid gap-4">
               <h2 className="text-xl font-semibold">Sign in</h2>
+              <input name="next" type="hidden" value={nextRoute} />
               <InputField
                 label="Email"
                 name="email"
@@ -60,6 +63,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
             </form>
             <form action={signUp} className="grid gap-4">
               <h2 className="text-xl font-semibold">Create account</h2>
+              <input name="next" type="hidden" value={nextRoute} />
               <InputField
                 label="Name"
                 name="full_name"
