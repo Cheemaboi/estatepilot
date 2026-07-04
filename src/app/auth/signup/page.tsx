@@ -21,12 +21,13 @@ export default async function SignUpPage({ searchParams }: SignUpPageProps) {
       eyebrow="EstatePilot auth"
       title="Create your agency account."
       description="Set up a dashboard-ready account for agents and admins with Supabase Auth."
+      tone="public"
       footer={
         <div className="flex flex-wrap items-center gap-3 text-sm">
           <Link className="text-white/70 hover:text-white" href="/auth/login">
             Already have an account?
           </Link>
-          <span className="text-white/30">•</span>
+          <span className="text-white/30">/</span>
           <Link className="text-white/70 hover:text-white" href="/auth/admin">
             Admin sign in
           </Link>
@@ -38,26 +39,26 @@ export default async function SignUpPage({ searchParams }: SignUpPageProps) {
           <h2 className="text-xl font-semibold text-white">Create account</h2>
           <input name="next" type="hidden" value={nextRoute} />
           <InputField
+            autoComplete="name"
             label="Name"
             name="full_name"
             placeholder="Maya Sterling"
-            autoComplete="name"
             required
           />
           <InputField
+            autoComplete="email"
             label="Email"
             name="email"
             placeholder="new-agent@example.com"
             type="email"
-            autoComplete="email"
             required
           />
           <InputField
+            autoComplete="new-password"
             label="Password"
             name="password"
             placeholder="At least 6 characters"
             type="password"
-            autoComplete="new-password"
             required
           />
           <button
@@ -84,3 +85,4 @@ export default async function SignUpPage({ searchParams }: SignUpPageProps) {
     </AuthShell>
   );
 }
+

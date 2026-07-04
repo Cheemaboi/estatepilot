@@ -21,12 +21,13 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
       eyebrow="EstatePilot auth"
       title="Sign in to the agency dashboard."
       description="Use your agency account to get into the dashboard, manage listings, and review leads."
+      tone="public"
       footer={
         <div className="flex flex-wrap items-center gap-3 text-sm">
           <Link className="text-white/70 hover:text-white" href="/auth/signup">
             Create an account
           </Link>
-          <span className="text-white/30">•</span>
+          <span className="text-white/30">/</span>
           <Link className="text-white/70 hover:text-white" href="/auth/admin">
             Admin sign in
           </Link>
@@ -38,19 +39,19 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           <h2 className="text-xl font-semibold text-white">Sign in</h2>
           <input name="next" type="hidden" value={nextRoute} />
           <InputField
+            autoComplete="email"
             label="Email"
             name="email"
             placeholder="agent@example.com"
             type="email"
-            autoComplete="email"
             required
           />
           <InputField
+            autoComplete="current-password"
             label="Password"
             name="password"
             placeholder="Password"
             type="password"
-            autoComplete="current-password"
             required
           />
           <button
@@ -77,3 +78,4 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
     </AuthShell>
   );
 }
+
